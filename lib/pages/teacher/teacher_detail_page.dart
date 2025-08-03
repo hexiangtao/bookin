@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:bookin/api/teacher.dart';
 import 'package:bookin/api/comment.dart';
 import 'package:bookin/pages/booking/create_booking_page.dart';
-import 'package:bookin/pages/project/project_detail_page.dart';
+import 'package:bookin/pages/project/project_detail_page.dart' as project_detail;
 
 class TeacherDetailPage extends StatefulWidget {
   final String teacherId;
@@ -465,7 +465,7 @@ class _TeacherDetailPageState extends State<TeacherDetailPage>
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ProjectDetailPage(projectId: project.id),
+                        builder: (context) => project_detail.ProjectDetailPage(projectId: project.id),
                       ),
                     );
                   },

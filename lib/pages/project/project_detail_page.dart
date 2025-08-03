@@ -351,7 +351,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
                                             ),
                                             const SizedBox(width: 4),
                                             Text(
-                                              '${_projectDetail!.timer ?? 60}分钟',
+                                              '${_projectDetail!.duration ?? 60}分钟',
                                               style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Color(0xFF666666),
@@ -1373,7 +1373,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
                       const SizedBox(width: 24),
                       _buildStatItem('销量', '${_projectDetail!.salesCount ?? 0}', Icons.shopping_cart),
                       const SizedBox(width: 24),
-                      _buildStatItem('时长', '${_projectDetail!.timer ?? 60}分钟', Icons.access_time),
+                      _buildStatItem('时长', '${_projectDetail!.duration ?? 60}分钟', Icons.access_time),
                     ],
                   ),
                 ),

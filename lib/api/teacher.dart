@@ -23,6 +23,7 @@ class Teacher {
   final List<String> specialties;
   final String? address;
   final bool isVerified;
+  final bool isRecommend; // 是否推荐技师（红牌）
 
   Teacher({
     required this.id,
@@ -45,6 +46,7 @@ class Teacher {
     this.specialties = const [],
     this.address,
     this.isVerified = false,
+    this.isRecommend = false,
   });
 
   factory Teacher.fromJson(Map<String, dynamic> json) {
@@ -53,7 +55,7 @@ class Teacher {
       name: json['name']?.toString() ?? '',
       avatar: json['avatar']?.toString() ?? '',
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
-      serviceCount: json['serviceCount'] as int? ?? 0,
+      serviceCount: json['orderCount'] as int? ?? 0, // 使用orderCount作为serviceCount
       tags: (json['tags'] as List?)?.map((e) => e.toString()).toList() ?? [],
       gender: json['gender']?.toString(),
       age: json['age'] as int?,
@@ -69,6 +71,7 @@ class Teacher {
       specialties: (json['specialties'] as List?)?.map((e) => e.toString()).toList() ?? [],
       address: json['address']?.toString(),
       isVerified: json['isVerified'] as bool? ?? false,
+      isRecommend: json['isRecommend'] as bool? ?? false, // 处理isRecommend字段
     );
   }
 }

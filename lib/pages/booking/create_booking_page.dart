@@ -226,7 +226,7 @@ class _CreateBookingPageState extends State<CreateBookingPage> {
                                     ? Image.network(_projectDetail!.cover!, width: 50, height: 50, fit: BoxFit.cover)
                                     : const Icon(Icons.medical_services),
                                 title: Text(_projectDetail?.name ?? '未知项目'),
-                                subtitle: Text('时长: ${_projectDetail?.timer ?? '-'}分钟'),
+                                subtitle: Text('时长: ${_projectDetail?.duration ?? '-'}分钟'),
                                 trailing: Text('¥${(_projectDetail?.price ?? 0 / 100).toStringAsFixed(2)}'),
                               ),
                             ],

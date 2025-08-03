@@ -12,12 +12,14 @@ class Project {
   final int price; // 现价，以分为单位
   final int? num; // Number of available items/slots
   final String? tag; // e.g., "热门", "推荐"
-  final int? timer; // Duration in minutes
+  final int? duration; // Duration in minutes (API字段)
   final int? buyCount; // Number of times bought
   final String? desc; // 保留desc字段
   final String? description; // API中的description字段
   final double? rating; // 评分，浮点数
   final int? salesCount; // Number of sales
+  final int? commentCount; // 评论数量
+  final bool? isCollected; // 是否已收藏
   final String? goodRate; // Good review rate, e.g., "90%"
   final List<String> tags; // List of tags
   final List<String> images; // Project images
@@ -26,6 +28,11 @@ class Project {
   final bool? isHot; // 是否为热门
   final bool? isNew; // 是否为新品
   final int? weight; // 权重
+  final List<String> features; // 特色功效
+  final List<String> process; // 服务流程
+  final List<String> attention; // 注意事项
+  final List<dynamic> recommendTechs; // 推荐技师
+  final List<dynamic> recommendProjects; // 推荐项目
 
   Project({
     required this.id,
@@ -37,12 +44,14 @@ class Project {
     required this.price,
     this.num,
     this.tag,
-    this.timer,
+    this.duration,
     this.buyCount,
     this.desc,
     this.description,
     this.rating,
     this.salesCount,
+    this.commentCount,
+    this.isCollected,
     this.goodRate,
     this.tags = const [],
     this.images = const [],
@@ -51,6 +60,11 @@ class Project {
     this.isHot,
     this.isNew,
     this.weight,
+    this.features = const [],
+    this.process = const [],
+    this.attention = const [],
+    this.recommendTechs = const [],
+    this.recommendProjects = const [],
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
@@ -64,12 +78,14 @@ class Project {
       price: json['price'] as int? ?? 0,
       num: json['num'] as int?,
       tag: json['tag']?.toString(),
-      timer: json['timer'] as int?,
+      duration: json['duration'] as int?,
       buyCount: json['buyCount'] as int?,
       desc: json['desc']?.toString(),
       description: json['description']?.toString(),
       rating: (json['rating'] as Object?)?.toString() != null ? double.tryParse(json['rating'].toString()) : null,
       salesCount: json['salesCount'] as int?,
+      commentCount: json['commentCount'] as int?,
+      isCollected: json['isCollected'] as bool?,
       goodRate: json['goodRate']?.toString(),
       tags: json['tags'] != null ? List<String>.from(json['tags'] as List) : [],
       images: json['images'] != null ? List<String>.from(json['images'] as List) : [],
@@ -78,6 +94,11 @@ class Project {
       isHot: json['isHot'] as bool?,
       isNew: json['isNew'] as bool?,
       weight: json['weight'] as int?,
+      features: json['features'] != null ? List<String>.from(json['features'] as List) : [],
+      process: json['process'] != null ? List<String>.from(json['process'] as List) : [],
+      attention: json['attention'] != null ? List<String>.from(json['attention'] as List) : [],
+      recommendTechs: json['recommendTechs'] != null ? List<dynamic>.from(json['recommendTechs'] as List) : [],
+      recommendProjects: json['recommendProjects'] != null ? List<dynamic>.from(json['recommendProjects'] as List) : [],
     );
   }
 
@@ -92,12 +113,14 @@ class Project {
       'price': price,
       'num': num,
       'tag': tag,
-      'timer': timer,
+      'duration': duration,
       'buyCount': buyCount,
       'desc': desc,
       'description': description,
       'rating': rating,
       'salesCount': salesCount,
+      'commentCount': commentCount,
+      'isCollected': isCollected,
       'goodRate': goodRate,
       'tags': tags,
       'suitableCrowd': suitableCrowd,
@@ -105,6 +128,11 @@ class Project {
       'isHot': isHot,
       'isNew': isNew,
       'weight': weight,
+      'features': features,
+      'process': process,
+      'attention': attention,
+      'recommendTechs': recommendTechs,
+      'recommendProjects': recommendProjects,
     };
   }
 }

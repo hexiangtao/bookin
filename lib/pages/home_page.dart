@@ -5,7 +5,7 @@ import 'package:bookin/api/base.dart';
 import 'package:bookin/api/home.dart';
 import 'package:bookin/api/project.dart';
 import 'package:bookin/api/teacher.dart';
-import 'package:bookin/pages/project/project_detail_page.dart';
+import 'package:bookin/pages/project/project_detail_page.dart' as project_detail;
 import 'package:bookin/pages/teacher/teacher_detail_page.dart';
 import 'package:bookin/pages/teacher_list_page.dart';
 import 'package:bookin/widgets/network_image_with_fallback.dart';
@@ -692,7 +692,7 @@ class _HomePageContentState extends State<HomePageContent>
           ),
           // 技师列表
           SizedBox(
-            height: 160, // 增加高度以适应更好的布局
+            height: 200, // 从160增加到200，提供更充足的空间
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -723,7 +723,8 @@ class _HomePageContentState extends State<HomePageContent>
         );
       },
       child: Container(
-        width: 110, // 稍微增加宽度
+        width: 110,
+        height: 192, // 增加卡片总高度以适应更高的头像
         margin: const EdgeInsets.only(right: 12),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -738,11 +739,12 @@ class _HomePageContentState extends State<HomePageContent>
         ),
         child: Column(
           children: [
+            // 图片区域
             Stack(
               children: [
                 Container(
-                  width: 110,
-                  height: 110, // 调整为正方形
+                  width: 94, // 图片容器宽度
+                  height: 110, // 增加图片容器高度匹配H5版本
                   margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
@@ -758,7 +760,7 @@ class _HomePageContentState extends State<HomePageContent>
                     borderRadius: BorderRadius.circular(8),
                     child: NetworkImageWithFallback(
                       imageUrl: technician.avatar,
-                      width: 110,
+                      width: 94,
                       height: 110,
                       fit: BoxFit.cover,
                       errorWidget: _buildTechnicianImagePlaceholder(technician.name),
@@ -766,19 +768,19 @@ class _HomePageContentState extends State<HomePageContent>
                     ),
                   ),
                 ),
-                if (technician.tags.contains('红牌') || technician.tags.contains('热门'))
+                if (technician.isRecommend)
                   Positioned(
                     top: 8,
                     left: 8,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
                           colors: [Color(0xFFFF4757), Color(0xFFFF3742)],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(6),
                         boxShadow: [
                           BoxShadow(
                             color: const Color(0xFFFF4757).withOpacity(0.3),
@@ -792,14 +794,14 @@ class _HomePageContentState extends State<HomePageContent>
                         children: [
                           Text(
                             '🔥',
-                            style: TextStyle(fontSize: 10),
+                            style: TextStyle(fontSize: 8),
                           ),
-                          SizedBox(width: 2),
+                          SizedBox(width: 1),
                           Text(
                             '红牌',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 10,
+                              fontSize: 8,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -809,32 +811,39 @@ class _HomePageContentState extends State<HomePageContent>
                   ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            // 文本区域 - 使用固定高度确保显示完整
+            Container(
+              height: 66, // 固定文本区域高度
+              padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                     technician.name,
-                     style: const TextStyle(
-                       fontSize: 15,
-                       fontWeight: FontWeight.bold,
-                       color: Colors.black87,
-                     ),
-                     maxLines: 1,
-                     overflow: TextOverflow.ellipsis,
-                   ),
-                   const SizedBox(height: 4),
-                   Text(
-                     '已接单${technician.serviceCount}',
-                     style: TextStyle(
-                       fontSize: 12,
-                       color: Colors.grey[600],
-                       fontWeight: FontWeight.w500,
-                     ),
-                   ),
-                 ],
-               ),
-             ),
+                    technician.name,
+                    style: const TextStyle(
+                      fontSize: 14, // 稍微减小字体
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '已接单${technician.serviceCount}',
+                    style: TextStyle(
+                      fontSize: 11, // 减小字体确保显示完整
+                      color: Colors.grey[600],
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -844,6 +853,7 @@ class _HomePageContentState extends State<HomePageContent>
   Widget _buildTechnicianPlaceholder(String name) {
     return Container(
       width: 110,
+      height: 176, // 与真实卡片保持一致的高度
       margin: const EdgeInsets.only(right: 12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -859,8 +869,8 @@ class _HomePageContentState extends State<HomePageContent>
       child: Column(
         children: [
           Container(
-            width: 110,
-            height: 110,
+            width: 94,
+            height: 94,
             margin: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
@@ -877,26 +887,34 @@ class _HomePageContentState extends State<HomePageContent>
               child: _buildTechnicianImagePlaceholder(name),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+          Container(
+            height: 66,
+            padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
                   name,
                   style: const TextStyle(
-                    fontSize: 15,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     color: Colors.black87,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Text(
                   '已接单0',
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 11,
                     color: Colors.grey[600],
                     fontWeight: FontWeight.w500,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
                 ),
               ],
             ),
@@ -1053,7 +1071,7 @@ class _HomePageContentState extends State<HomePageContent>
                                 borderRadius: BorderRadius.circular(4),
                               ),
                               child: Text(
-                                '${project.timer ?? 60}分钟',
+                                '${project.duration ?? 60}分钟',
                                 style: const TextStyle(
                                   fontSize: 11,
                                   color: Color(0xFFFF5777),
@@ -1113,7 +1131,7 @@ class _HomePageContentState extends State<HomePageContent>
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => ProjectDetailPage(projectId: project.id.toString()),
+                                    builder: (context) => project_detail.ProjectDetailPage(projectId: project.id.toString()),
                                   ),
                                 );
                               },

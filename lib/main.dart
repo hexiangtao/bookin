@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:bookin/utils/constants.dart';
 import 'package:bookin/pages/main_page.dart';
@@ -9,6 +10,9 @@ import 'package:bookin/providers/app_provider.dart';
 import 'package:bookin/widgets/global_overlay.dart'; // Import GlobalOverlay
 
 void main() {
+  // 禁用所有调试绘制功能
+  debugPaintSizeEnabled = false;
+  debugRepaintRainbowEnabled = false;
   runApp(
     MultiProvider(
       providers: [
@@ -27,6 +31,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: AppConstants.APP_NAME,
+      debugShowCheckedModeBanner: false, // 去掉debug横幅
+      showPerformanceOverlay: false, // 禁用性能覆盖层
+      debugShowMaterialGrid: false, // 禁用材质网格
+      showSemanticsDebugger: false, // 禁用语义调试器
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
