@@ -19,9 +19,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
   final ProjectApi _projectApi = ProjectApi();
   final TeacherApi _teacherApi = TeacherApi();
   Project? _projectDetail;
-  List<Teacher> _recommendedTeachers = [];
   bool _isLoading = true;
-  bool _isLoadingTeachers = false;
   String? _errorMessage;
   bool _isFavorited = false;
   late TabController _tabController;
@@ -31,7 +29,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _fetchProjectDetail();
-    _fetchRecommendedTeachers();
   }
 
   @override
@@ -57,31 +54,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
     } finally {
       setState(() {
         _isLoading = false;
-      });
-    }
-  }
-
-  Future<void> _fetchRecommendedTeachers() async {
-    setState(() {
-      _isLoadingTeachers = true;
-    });
-    try {
-      final response = await _teacherApi.getTechList(
-        context,
-        page: 1,
-        pageSize: 5,
-        projectId: widget.projectId,
-      );
-      if (response.success) {
-        setState(() {
-          _recommendedTeachers = response.data ?? [];
-        });
-      }
-    } catch (e) {
-      // Silently handle error for recommended teachers
-    } finally {
-      setState(() {
-        _isLoadingTeachers = false;
       });
     }
   }
@@ -180,40 +152,27 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
                           children: [
                             SizedBox(
                               height: 400,
-                              child: _projectDetail!.images.isNotEmpty
-                                  ? CarouselSlider(
-                                      options: CarouselOptions(
-                                        height: 400,
-                                        viewportFraction: 1.0,
-                                        enableInfiniteScroll: _projectDetail!.images.length > 1,
-                                        autoPlay: _projectDetail!.images.length > 1,
-                                        autoPlayInterval: const Duration(seconds: 4),
-                                        autoPlayAnimationDuration: const Duration(milliseconds: 800),
-                                        autoPlayCurve: Curves.fastOutSlowIn,
+                              child: _projectDetail!.cover != null && _projectDetail!.cover!.isNotEmpty
+                                  ? Container(
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                          image: NetworkImage(_projectDetail!.cover!),
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
-                                      items: _projectDetail!.images.map((imageUrl) {
-                                        return Container(
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                              image: NetworkImage(imageUrl),
-                                              fit: BoxFit.cover,
-                                            ),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.topCenter,
+                                            end: Alignment.bottomCenter,
+                                            colors: [
+                                              Colors.black.withOpacity(0.1),
+                                              Colors.black.withOpacity(0.3),
+                                            ],
                                           ),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              gradient: LinearGradient(
-                                                begin: Alignment.topCenter,
-                                                end: Alignment.bottomCenter,
-                                                colors: [
-                                                  Colors.black.withOpacity(0.1),
-                                                  Colors.black.withOpacity(0.3),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }).toList(),
+                                        ),
+                                      ),
                                     )
                                   : Container(
                                       width: double.infinity,
@@ -479,9 +438,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
                         //   _buildProcessSection(),
                         // Enhanced Contraindications Section
                         _buildContraindicationsSection(),
-                        // Enhanced Recommended Teachers Section
-                        if (_recommendedTeachers.isNotEmpty)
-                          _buildRecommendedTeachersSection(),
                         // Enhanced Notice Section
                         _buildNoticeSection(),
                         // Bottom spacing for fixed button
@@ -714,31 +670,31 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
           color: const Color(0xFFFFF5F7),
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: parts.map((part) => Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: const Color(0xFFFFCCD5)),
-              boxShadow: [
-                BoxShadow(
-                  color: const Color(0xFFFF5777).withOpacity(0.1),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: parts.asMap().entries.map((entry) {
+              int index = entry.key;
+              String part = entry.value;
+              return Container(
+                margin: EdgeInsets.only(right: index < parts.length - 1 ? 12 : 0),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFE4E8), // 浅粉色背景
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFFFFCCD5)),
                 ),
-              ],
-            ),
-            child: Text(
-              part,
-              style: const TextStyle(
-                fontSize: 14,
-                color: Color(0xFFFF5777),
-              ),
-            ),
-          )).toList(),
+                child: Text(
+                  part,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Color(0xFF333333), // 黑色文字
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ),
     );
@@ -761,29 +717,23 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
             crossAxisCount: 3,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,
-            childAspectRatio: 2.5,
+            childAspectRatio: 2.8,
           ),
           itemCount: materials.length,
           itemBuilder: (context, index) {
             return Container(
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.white, // 白色背景
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: const Color(0xFFFFCCD5)),
-                boxShadow: [
-                  BoxShadow(
-                    color: const Color(0xFFFF5777).withOpacity(0.1),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
               ),
               child: Center(
                 child: Text(
                   materials[index],
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Color(0xFFFF5777),
+                    color: Color(0xFF333333), // 黑色文字
+                    fontWeight: FontWeight.w500,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -981,130 +931,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
     );
   }
 
-  Widget _buildRecommendedTeachersSection() {
-    return _buildSectionContainer(
-      title: '推荐技师',
-      child: SizedBox(
-        height: 140,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: _recommendedTeachers.length,
-          itemBuilder: (context, index) {
-            final teacher = _recommendedTeachers[index];
-            return Container(
-              width: 280,
-              margin: const EdgeInsets.only(right: 16),
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: const Color(0xFFFF5777).withOpacity(0.3),
-                        width: 2,
-                      ),
-                    ),
-                    child: ClipOval(
-                      child: Image.network(
-                        teacher.avatar,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            color: Colors.grey[300],
-                            child: const Icon(
-                              Icons.person,
-                              color: Colors.grey,
-                              size: 30,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          teacher.name,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF333333),
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.star,
-                              size: 14,
-                              color: Color(0xFFFFCA3A),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              teacher.rating.toString(),
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFF666666),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Text(
-                              '${teacher.orderCount}+单',
-                              style: const TextStyle(
-                                fontSize: 12,
-                                color: Color(0xFF999999),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8),
-                        if (teacher.specialties?.isNotEmpty == true)
-                          Wrap(
-                            spacing: 6,
-                            children: teacher.specialties!.take(2).map((specialty) => Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFF5777).withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(
-                                specialty,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  color: Color(0xFFFF5777),
-                                ),
-                              ),
-                            )).toList(),
-                          ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      ),
-    );
-  }
+
 
   Widget _buildNoticeSection() {
     final notices = [
@@ -1419,7 +1246,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
                     ),
                     tabs: const [
                       Tab(text: '项目详情'),
-                      Tab(text: '推荐技师'),
                       Tab(text: '用户评价'),
                     ],
                   ),
@@ -1430,7 +1256,6 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
                     controller: _tabController,
                     children: [
                       _buildProjectDetailContent(),
-                      _buildRecommendedTeachersTab(),
                       _buildReviewsTab(),
                     ],
                   ),
@@ -1579,289 +1404,7 @@ class _ProjectDetailPageState extends State<ProjectDetailPage> with SingleTicker
     );
   }
 
-  Widget _buildRecommendedTeachersTab() {
-    return _isLoadingTeachers
-        ? const Center(child: CircularProgressIndicator())
-        : _recommendedTeachers.isEmpty
-            ? const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.person_search,
-                      size: 64,
-                      color: Color(0xFFCCCCCC),
-                    ),
-                    SizedBox(height: 16),
-                    Text(
-                      '暂无推荐技师',
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Color(0xFF999999),
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : ListView.builder(
-                padding: const EdgeInsets.all(20),
-                itemCount: _recommendedTeachers.length,
-                itemBuilder: (context, index) {
-                  final teacher = _recommendedTeachers[index];
-                  return Container(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.08),
-                          blurRadius: 12,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TeacherDetailPage(teacherId: teacher.id),
-                          ),
-                        );
-                      },
-                      borderRadius: BorderRadius.circular(16),
-                      child: Padding(
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                // Teacher Avatar
-                                Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    border: Border.all(
-                                      color: const Color(0xFFFF5777).withOpacity(0.3),
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(28),
-                                    child: teacher.avatar.isNotEmpty
-                                        ? Image.network(
-                                            teacher.avatar,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (context, error, stackTrace) {
-                                              return Container(
-                                                color: const Color(0xFFF5F5F5),
-                                                child: const Icon(
-                                                  Icons.person,
-                                                  color: Color(0xFFCCCCCC),
-                                                  size: 30,
-                                                ),
-                                              );
-                                            },
-                                          )
-                                        : Container(
-                                            color: const Color(0xFFF5F5F5),
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: Color(0xFFCCCCCC),
-                                              size: 30,
-                                            ),
-                                          ),
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                // Teacher Info
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            teacher.name,
-                                            style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xFF333333),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 8),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              gradient: const LinearGradient(
-                                                colors: [Color(0xFFFFD700), Color(0xFFFFA500)],
-                                              ),
-                                              borderRadius: BorderRadius.circular(10),
-                                            ),
-                                            child: const Text(
-                                              '金牌',
-                                              style: TextStyle(
-                                                fontSize: 10,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 2,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: const Color(0xFFFF5777).withOpacity(0.1),
-                                              borderRadius: BorderRadius.circular(4),
-                                            ),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                const Icon(
-                                                  Icons.star,
-                                                  color: Color(0xFFFF5777),
-                                                  size: 14,
-                                                ),
-                                                const SizedBox(width: 2),
-                                                Text(
-                                                  '${teacher.rating}',
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    color: Color(0xFFFF5777),
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          const SizedBox(width: 12),
-                                          Text(
-                                            '服务${teacher.serviceCount}次',
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              color: Color(0xFF999999),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                // Price
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '¥${((teacher.price ?? 0) / 100).toStringAsFixed(0)}',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFFFF5777),
-                                      ),
-                                    ),
-                                    const Text(
-                                      '起',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0xFF999999),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            
-                            // Specialties
-                            if (teacher.specialties.isNotEmpty) ...[
-                              const SizedBox(height: 16),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Wrap(
-                                  spacing: 8,
-                                  runSpacing: 8,
-                                  children: teacher.specialties.take(4).map((specialty) {
-                                    return Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 12,
-                                        vertical: 6,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFFF0F8FF),
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: const Color(0xFF87CEEB).withOpacity(0.5),
-                                        ),
-                                      ),
-                                      child: Text(
-                                        specialty,
-                                        style: const TextStyle(
-                                          fontSize: 12,
-                                          color: Color(0xFF4682B4),
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                ),
-                              ),
-                            ],
-                            
-                            const SizedBox(height: 16),
-                            // Book Button
-                            SizedBox(
-                              width: double.infinity,
-                              height: 44,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => CreateBookingPage(
-                                        techId: teacher.id,
-                                        projectId: widget.projectId,
-                                        date: DateTime.now().toString().split(' ')[0],
-                                        startTime: '09:00',
-                                      ),
-                                    ),
-                                  );
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color(0xFFFF5777),
-                                  foregroundColor: Colors.white,
-                                  elevation: 0,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(22),
-                                  ),
-                                ),
-                                child: const Text(
-                                  '立即预约',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-  }
+
 
   Widget _buildStatItem(String label, String value, IconData icon) {
     return Row(
