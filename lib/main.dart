@@ -1,53 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:provider/provider.dart';
-import 'package:bookin/shared/constants/constants.dart';
-import 'package:bookin/features/home/presentation/pages/main_page.dart';
-import 'package:bookin/features/auth/presentation/pages/login_page.dart';
-import 'package:bookin/features/home/presentation/pages/splash_page.dart';
-import 'package:bookin/shared/providers/user_provider.dart';
-import 'package:bookin/shared/providers/app_provider.dart';
-import 'package:bookin/shared/presentation/widgets/global_overlay.dart'; // Import GlobalOverlay
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'core/routes/app_pages.dart';
+import 'core/routes/app_routes.dart';
+import 'core/theme/app_theme.dart';
+import 'core/bindings/initial_binding.dart';
+import 'core/services/api_client.dart';
+import 'core/services/storage_service.dart';
+import 'core/config/app_config.dart';
 
-void main() {
-  // 禁用所有调试绘制功能
-  debugPaintSizeEnabled = false;
-  debugRepaintRainbowEnabled = false;
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => AppProvider()),
-      ],
-      child: const MyApp(),
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // 初始化存储服务
+  await StorageService().init();
+  
+  // 初始化API客户端
+  ApiClient().init();
+  
+  // 打印应用配置信息
+  AppConfig.printConfig();
+  
+  // 设置状态栏样式
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
     ),
   );
+  
+  // 强制竖屏
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
+  
+  runApp(const BookinApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class BookinApp extends StatelessWidget {
+  const BookinApp({super.key});
+  
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: AppConstants.APP_NAME,
-      debugShowCheckedModeBanner: false, // 去掉debug横幅
-      showPerformanceOverlay: false, // 禁用性能覆盖层
-      debugShowMaterialGrid: false, // 禁用材质网格
-      showSemanticsDebugger: false, // 禁用语义调试器
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: const SplashPage(), // Set SplashPage as the initial home
-      routes: {
-        '/home': (context) => const MainPage(),
-        '/login': (context) => const LoginPage(),
-        // Define other routes as needed
-      },
-      builder: (context, child) {
-        return GlobalOverlay(child: child!); // Wrap the entire app with GlobalOverlay
-      },
+    return GetMaterialApp(
+      title: AppConfig.appName,
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: ThemeMode.system,
+      initialRoute: AppRoutes.initial,
+      getPages: AppPages.routes,
+      initialBinding: InitialBinding(),
+      locale: const Locale('zh', 'CN'),
+      fallbackLocale: const Locale('zh', 'CN'),
+      defaultTransition: Transition.cupertino,
+      transitionDuration: const Duration(milliseconds: 300),
     );
   }
 }
