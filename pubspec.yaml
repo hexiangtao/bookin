@@ -52,6 +52,18 @@ dependencies:
   
   # Carousel slider
   carousel_slider: ^5.1.1
+  
+  # Dependency injection
+  get_it: ^7.7.0
+  
+  # Network connectivity
+  connectivity_plus: ^6.0.5
+  
+  # Equatable for value equality
+  equatable: ^2.0.5
+  
+  # Dio for HTTP requests
+  dio: ^5.7.0
 
 dev_dependencies:
   flutter_test:

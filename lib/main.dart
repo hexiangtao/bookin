@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
-import 'package:bookin/utils/constants.dart';
-import 'package:bookin/pages/main_page.dart';
-import 'package:bookin/pages/auth/login_page.dart';
-import 'package:bookin/pages/splash_page.dart';
-import 'package:bookin/providers/user_provider.dart';
-import 'package:bookin/providers/app_provider.dart';
-import 'package:bookin/widgets/global_overlay.dart'; // Import GlobalOverlay
+import 'package:bookin/shared/constants/constants.dart';
+import 'package:bookin/features/home/presentation/pages/main_page.dart';
+import 'package:bookin/features/auth/presentation/pages/login_page.dart';
+import 'package:bookin/features/home/presentation/pages/splash_page.dart';
+import 'package:bookin/shared/providers/user_provider.dart';
+import 'package:bookin/shared/providers/app_provider.dart';
+import 'package:bookin/shared/presentation/widgets/global_overlay.dart'; // Import GlobalOverlay
 
 void main() {
   // 禁用所有调试绘制功能
