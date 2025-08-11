@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import '../models/banner_model.dart';
 import '../models/project_model.dart';
 import '../models/technician_model.dart';
+import '../models/announcement_model.dart';
+import '../models/coupon_model.dart';
 import 'api_client.dart';
 import 'api_endpoints.dart';
 import 'network_exception.dart';
@@ -155,6 +157,84 @@ class HomeService {
       throw NetworkException.fromDioException(e);
     } catch (e) {
       throw NetworkException(message: '搜索项目失败: $e');
+    }
+  }
+
+  /// 获取公告列表
+  Future<List<AnnouncementModel>> fetchAnnouncements() async {
+    try {
+      final response = await _apiClient.get(ApiEndpoints.announcements);
+      
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if (data['success'] == true && data['data'] != null) {
+          final List<dynamic> announcementList = data['data'];
+          return announcementList.map((json) => AnnouncementModel.fromJson(json)).toList();
+        }
+      }
+      
+      throw NetworkException(
+        message: '获取公告数据失败',
+        statusCode: response.statusCode,
+      );
+    } on DioException catch (e) {
+      throw NetworkException.fromDioException(e);
+    } catch (e) {
+      throw NetworkException(message: '获取公告数据失败: $e');
+    }
+  }
+
+  /// 获取优惠券列表
+  Future<List<CouponModel>> fetchCoupons() async {
+    try {
+      // 使用POST请求，与H5项目保持一致
+      final response = await _apiClient.post(
+        ApiEndpoints.coupons,
+        data: {
+          'current': 1,
+          'size': 10
+        },
+      );
+      
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        if ((data['code'] == 0 || data['code'] == '0' || data['success'] == true) && data['data'] != null) {
+          final List<dynamic> couponList = data['data']['list'] ?? data['data'];
+          return couponList.map((json) => CouponModel.fromJson(json)).toList();
+        }
+      }
+      
+      throw NetworkException(
+        message: '获取优惠券数据失败',
+        statusCode: response.statusCode,
+      );
+    } on DioException catch (e) {
+      throw NetworkException.fromDioException(e);
+    } catch (e) {
+      throw NetworkException(message: '获取优惠券数据失败: $e');
+    }
+  }
+
+  /// 领取优惠券
+  Future<bool> receiveCoupon(int couponId) async {
+    try {
+      final response = await _apiClient.post(
+        ApiEndpoints.receiveCoupon,
+        data: {
+          'couponId': couponId
+        },
+      );
+      
+      if (response.statusCode == 200 && response.data != null) {
+        final data = response.data;
+        return data['code'] == 0 || data['code'] == '0' || data['success'] == true;
+      }
+      
+      return false;
+    } on DioException catch (e) {
+      throw NetworkException.fromDioException(e);
+    } catch (e) {
+      throw NetworkException(message: '领取优惠券失败: $e');
     }
   }
 }

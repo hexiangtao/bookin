@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart' hide Response;
 import '../config/app_config.dart';
+import 'storage_service.dart';
 
 class ApiClient {
   static final ApiClient _instance = ApiClient._internal();
@@ -86,8 +88,15 @@ class ApiClient {
   }
 
   String? _getAuthToken() {
-    // TODO: 从本地存储获取token
-    return null;
+    try {
+      final storageService = Get.find<StorageService>();
+      return storageService.getToken();
+    } catch (e) {
+      if (AppConfig.enableApiLog) {
+        print('⚠️ Failed to get auth token: $e');
+      }
+      return null;
+    }
   }
 
   void _handleError(DioException error) {

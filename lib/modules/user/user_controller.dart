@@ -37,7 +37,11 @@ class UserController extends GetxController {
         avatar: 'https://via.placeholder.com/100',
       );
       
+      // 模拟token（实际项目中应该从API响应中获取）
+      const mockToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
+      
       await _storage.saveUser(user);
+      await _storage.saveToken(mockToken);
       currentUser.value = user;
       isLoggedIn.value = true;
       
@@ -53,6 +57,7 @@ class UserController extends GetxController {
 
   Future<void> logout() async {
     await _storage.clearUser();
+    await _storage.removeToken();
     currentUser.value = null;
     isLoggedIn.value = false;
     Get.snackbar('已退出', '您已成功退出登录');

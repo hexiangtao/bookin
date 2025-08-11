@@ -3,6 +3,9 @@ import 'package:get/get.dart';
 
 import 'home_controller.dart';
 import '../../core/shell/tab_shell_controller.dart';
+import 'widgets/announcement_banner.dart';
+import 'widgets/announcement_dialog.dart';
+import 'widgets/coupon_dialog.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({super.key});
@@ -11,32 +14,71 @@ class HomePage extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F8F8),
-      body: Column(
+      body: Stack(
         children: [
-          _buildFixedHeader(),
-          Expanded(
-            child: Obx(() {
-              if (controller.showError) {
-                return _buildErrorState();
-              }
-              
-              return RefreshIndicator(
-                onRefresh: controller.refreshData,
-                child: CustomScrollView(
-                  physics: const ClampingScrollPhysics(),
-                  slivers: [
-                    SliverToBoxAdapter(child: _buildBannerSection()),
-                    SliverToBoxAdapter(child: _buildServiceFeatures()),
-                    SliverToBoxAdapter(child: _buildFeaturedTechnicians()),
-                    SliverToBoxAdapter(child: _buildProjectList()),
-                    const SliverToBoxAdapter(
-                      child: SizedBox(height: 80), // 底部间距，避免被TabBar遮挡
+          Column(
+            children: [
+              _buildFixedHeader(),
+              Expanded(
+                child: Obx(() {
+                  if (controller.showError) {
+                    return _buildErrorState();
+                  }
+                  
+                  return RefreshIndicator(
+                    onRefresh: controller.refreshData,
+                    child: CustomScrollView(
+                      physics: const ClampingScrollPhysics(),
+                      slivers: [
+                        SliverToBoxAdapter(child: _buildBannerSection()),
+                        // 公告横幅
+                        SliverToBoxAdapter(
+                          child: Obx(() {
+                            if (controller.bannerAnnouncements.isEmpty) {
+                              return const SizedBox.shrink();
+                            }
+                            return Container(
+                              margin: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+                              child: AnnouncementBanner(
+                                announcements: controller.bannerAnnouncements,
+                              ),
+                            );
+                          }),
+                        ),
+                        SliverToBoxAdapter(child: _buildServiceFeatures()),
+                        SliverToBoxAdapter(child: _buildFeaturedTechnicians()),
+                        SliverToBoxAdapter(child: _buildProjectList()),
+                        const SliverToBoxAdapter(
+                          child: SizedBox(height: 80), // 底部间距，避免被TabBar遮挡
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              );
-            }),
+                  );
+                }),
+              ),
+            ],
           ),
+          // 公告弹窗
+          Obx(() {
+            if (!controller.showAnnouncementDialog.value || controller.popupAnnouncements.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return AnnouncementDialog(
+              announcement: controller.popupAnnouncements.first,
+              onClose: controller.closeAnnouncementDialog,
+            );
+          }),
+          // 优惠券弹窗
+          Obx(() {
+            if (!controller.showCouponDialog.value || controller.availableCoupons.isEmpty) {
+              return const SizedBox.shrink();
+            }
+            return CouponDialog(
+              coupons: controller.availableCoupons,
+              onReceive: controller.receiveCoupon,
+              onClose: controller.closeCouponDialog,
+            );
+          }),
         ],
       ),
     );
@@ -125,13 +167,53 @@ class HomePage extends GetView<HomeController> {
       height: 170,
       margin: const EdgeInsets.fromLTRB(15, 10, 15, 0),
       child: Obx(() {
-        if (controller.banners.isEmpty) {
+        // 显示加载状态
+        if (controller.bannersLoading.value) {
           return Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
               color: Colors.grey[200],
             ),
             child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+        
+        // 显示错误状态
+        if (controller.bannersError.value) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey[100],
+              border: Border.all(color: Colors.grey[300]!),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.error_outline, color: Colors.grey[400], size: 32),
+                  const SizedBox(height: 8),
+                  Text('横幅加载失败', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                  const SizedBox(height: 8),
+                  TextButton(
+                     onPressed: () => controller.loadBanners(),
+                     child: const Text('重试', style: TextStyle(fontSize: 12)),
+                   ),
+                ],
+              ),
+            ),
+          );
+        }
+        
+        // 显示空状态或数据
+        if (controller.banners.isEmpty) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              color: Colors.grey[100],
+            ),
+            child: Center(
+              child: Text('暂无横幅', style: TextStyle(color: Colors.grey[500], fontSize: 14)),
+            ),
           );
         }
         return Stack(
@@ -265,10 +347,42 @@ class HomePage extends GetView<HomeController> {
             Get.find<TabShellController>().changeTab(1);
           }),
           Obx(() {
-            if (controller.featuredTechnicians.isEmpty) {
+            // 显示加载状态
+            if (controller.techniciansLoading.value) {
               return const Padding(
                 padding: EdgeInsets.all(24),
                 child: Center(child: CircularProgressIndicator()),
+              );
+            }
+            
+            // 显示错误状态
+            if (controller.techniciansError.value) {
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Center(
+                  child: Column(
+                    children: [
+                      Icon(Icons.error_outline, color: Colors.grey[400], size: 32),
+                      const SizedBox(height: 8),
+                      Text('技师加载失败', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                      const SizedBox(height: 8),
+                      TextButton(
+                        onPressed: () => controller.loadFeaturedTechnicians(),
+                        child: const Text('重试', style: TextStyle(fontSize: 12)),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }
+            
+            // 显示空状态
+            if (controller.featuredTechnicians.isEmpty) {
+              return Padding(
+                padding: const EdgeInsets.all(24),
+                child: Center(
+                  child: Text('暂无推荐技师', style: TextStyle(color: Colors.grey[500], fontSize: 14)),
+                ),
               );
             }
             // 限制显示3个技师，使用Row布局平均分配宽度
@@ -464,9 +578,68 @@ class HomePage extends GetView<HomeController> {
 
   Widget _buildProjectList() {
     return Obx(() {
+      // 显示加载状态
+      if (controller.projectsLoading.value) {
+        return Container(
+          margin: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                offset: const Offset(0, 2),
+                blurRadius: 12,
+              ),
+            ],
+          ),
+          child: const Padding(
+            padding: EdgeInsets.all(24),
+            child: Center(child: CircularProgressIndicator()),
+          ),
+        );
+      }
+      
+      // 显示错误状态
+      if (controller.projectsError.value) {
+        return Container(
+          margin: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.04),
+                offset: const Offset(0, 2),
+                blurRadius: 12,
+              ),
+            ],
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Center(
+              child: Column(
+                children: [
+                  Icon(Icons.error_outline, color: Colors.grey[400], size: 32),
+                  const SizedBox(height: 8),
+                  Text('项目加载失败', style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                  const SizedBox(height: 8),
+                  TextButton(
+                    onPressed: () => controller.loadHotProjects(),
+                    child: const Text('重试', style: TextStyle(fontSize: 12)),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      }
+      
+      // 显示空状态或数据
       if (controller.projects.isEmpty) {
         return const SizedBox();
       }
+      
       return ListView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),

@@ -7,6 +7,7 @@ import '../models/user_model.dart';
 
 class StorageService extends GetxService {
   static const String _userKey = 'current_user';
+  static const String _tokenKey = 'auth_token';
 
   late SharedPreferences _prefs;
 
@@ -28,4 +29,19 @@ class StorageService extends GetxService {
   Future<void> clearUser() async {
     await _prefs.remove(_userKey);
   }
+
+  // Token 相关方法
+  Future<void> saveToken(String token) async {
+    await _prefs.setString(_tokenKey, token);
+  }
+
+  String? getToken() {
+    return _prefs.getString(_tokenKey);
+  }
+
+  Future<void> removeToken() async {
+    await _prefs.remove(_tokenKey);
+  }
+
+  bool get isLoggedIn => getToken() != null;
 }

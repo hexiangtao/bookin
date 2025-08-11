@@ -51,9 +51,15 @@ class ApiEndpoints {
   static const String reviews = '/comment/list';
   static const String createReview = '/comment/create';
   
-  // 优惠券相关
-  static const String coupons = '/coupon/list';
+  // 优惠券相关 - 与H5项目保持一致
+  static const String coupons = '/coupon/available';
   static const String userCoupons = '/user/coupons';
+  static const String receiveCoupon = '/coupon/receive';
+  
+  // 公告相关
+  static const String announcements = '/home/announcements';
+  static const String announcementDetail = '/announcement/detail/{id}';
+  static const String markAnnouncementRead = '/announcement/read/{id}';
   
   // 通知相关
   static const String notifications = '/notification/list';

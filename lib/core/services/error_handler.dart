@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'network_exception.dart';
+import 'storage_service.dart';
+import '../../modules/user/user_controller.dart';
 
 class ErrorHandler {
   static final ErrorHandler _instance = ErrorHandler._internal();
@@ -56,7 +58,16 @@ class ErrorHandler {
   /// 处理未授权错误
   void _handleUnauthorized() {
     // 清除本地token
-    // TODO: 实现token清除逻辑
+    try {
+      final storageService = Get.find<StorageService>();
+      storageService.removeToken();
+      
+      // 清除用户信息
+      final userController = Get.find<UserController>();
+      userController.logout();
+    } catch (e) {
+      print('⚠️ Failed to clear auth data: $e');
+    }
     
     Get.snackbar(
       '登录过期',
