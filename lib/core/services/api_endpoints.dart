@@ -4,7 +4,7 @@ class ApiEndpoints {
   // 首页相关
   static const String banners = '/home/banners';
   static const String hotProjects = '/home/projects';
-  static const String featuredTechnicians = '/home/featured-technicians';
+  static const String featuredTechnicians = '/teacher/list-high-quantity';
   
   // 技师相关 - 与H5项目路径保持一致
   static const String technicians = '/teacher/list';
