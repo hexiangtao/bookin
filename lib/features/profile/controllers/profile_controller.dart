@@ -8,6 +8,7 @@ import '../../../core/services/auth_service.dart';
 import '../../../core/services/user_service.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/config/app_config.dart';
+import '../widgets/logout_confirm_dialog.dart';
 
 class ProfileController extends GetxController {
   // 用户信息
@@ -261,19 +262,9 @@ class ProfileController extends GetxController {
     try {
       // 显示确认对话框
       final confirmed = await Get.dialog<bool>(
-        AlertDialog(
-          title: const Text('确认退出'),
-          content: const Text('确定要退出登录吗？'),
-          actions: [
-            TextButton(
-              onPressed: () => Get.back(result: false),
-              child: const Text('取消'),
-            ),
-            TextButton(
-              onPressed: () => Get.back(result: true),
-              child: const Text('确定'),
-            ),
-          ],
+        LogoutConfirmDialog(
+          onConfirm: () => Get.back(result: true),
+          onCancel: () => Get.back(result: false),
         ),
       );
       
