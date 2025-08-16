@@ -24,7 +24,7 @@ class ProfileHeader extends StatelessWidget {
           bottomRight: Radius.circular(30),
         ),
         child: Container(
-          height: 180, // 进一步增加高度以解决布局溢出问题
+          height: 180, // 恢复原始高度避免与顶部图标过于紧凑
           child: Stack(
           children: [
             // 背景层 - 限制在容器范围内
@@ -41,160 +41,168 @@ class ProfileHeader extends StatelessWidget {
                   left: 16.0,
                   right: 16.0,
                   top: 0.0, // 移除顶部边距
-                  bottom: 30.0, // 增加底部边距以避免头像被截断
+                  bottom: 20.0, // 优化底部边距
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // 分散对齐
+                  mainAxisAlignment: MainAxisAlignment.end, // 内容下移对齐
                   children: [
-                    // 顶部工具栏 - 只保留设置按钮
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          onPressed: () => controller.handleNavigation('settings'),
-                          icon: const Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                            size: 24,
-                          ),
-                          padding: EdgeInsets.zero, // 移除按钮内边距
-                          constraints: const BoxConstraints(), // 移除最小尺寸约束
-                        ),
-                      ],
-                    ),
-                    
-                    // 用户信息
+                    // 用户信息 - 水平排列布局，包含设置图标
                     Obx(() {
                       final user = controller.userInfo.value;
                       
                       return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // 用户头像
+                          // 左侧：用户头像和昵称
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // 用户头像
+                              GestureDetector(
+                                onTap: () => controller.handleNavigation('settings'),
+                                child: Container(
+                                  width: 80,
+                                  height: 80,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: controller.getUserAvatarBackground(),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.4),
+                                      width: 2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: user?.avatar?.isNotEmpty == true
+                                      ? ClipOval(
+                                          child: CachedNetworkImage(
+                                            imageUrl: user!.avatar!,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) => const Center(
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                              ),
+                                            ),
+                                            errorWidget: (context, url, error) => _buildAvatarPlaceholder(),
+                                          ),
+                                        )
+                                      : _buildAvatarPlaceholder(),
+                                ),
+                              ),
+                              
+                              const SizedBox(width: 12), // 头像和昵称间距
+                              
+                              // 用户名
+                              Text(
+                                controller.getUserDisplayName(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  height: 1.2,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(0, 1),
+                                      blurRadius: 2,
+                                      color: Color.fromRGBO(0, 0, 0, 0.6),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          
+                          // 右侧：设置图标
                           GestureDetector(
                             onTap: () => controller.handleNavigation('settings'),
                             child: Container(
-                              width: 75, // 适中的头像尺寸
-                              height: 75,
+                              width: 32,
+                              height: 32,
                               decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
                                 shape: BoxShape.circle,
-                                color: controller.getUserAvatarBackground(),
-                                border: Border.all(
-                                  color: Colors.white.withOpacity(0.4), // 增加边框透明度
-                                  width: 3, // 增加边框宽度
-                                ),
-                                boxShadow: [ // 添加阴影效果
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
                               ),
-                              child: user?.avatar?.isNotEmpty == true
-                                  ? ClipOval(
-                                      child: CachedNetworkImage(
-                                        imageUrl: user!.avatar!,
-                                        fit: BoxFit.cover,
-                                        placeholder: (context, url) => const Center(
-                                          child: CircularProgressIndicator(
-                                            strokeWidth: 2,
-                                            valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) => _buildAvatarPlaceholder(),
-                                      ),
-                                    )
-                                  : _buildAvatarPlaceholder(),
+                              child: const Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                                size: 20,
+                              ),
                             ),
                           ),
-                          
-                          const SizedBox(width: 10), // 紧凑的头像和文本间距
-                          
-                          // 用户信息
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                // 用户名 - 添加阴影增强可读性
-                                Text(
-                                  controller.getUserDisplayName(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18, // 适中的字体大小
-                                    fontWeight: FontWeight.bold,
-                                    height: 1.2, // 紧凑的行高
-                                    shadows: [
-                                      Shadow(
-                                        offset: Offset(0, 1),
-                                        blurRadius: 2,
-                                        color: Color.fromRGBO(0, 0, 0, 0.6),
-                                      ),
-                                    ],
-                                  ),
+                        ],
+                      );
+                    }),
+                    
+                    // 用户类型或等级 - 居中显示
+                    Obx(() {
+                      final user = controller.userInfo.value;
+                      return Column(
+                        children: [
+                          if (user?.userType != null)
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                _getUserTypeText(user!.userType!),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  height: 1.1,
+                                  shadows: [
+                                    Shadow(
+                                      offset: Offset(0, 1),
+                                      blurRadius: 1.5,
+                                      color: Color.fromRGBO(0, 0, 0, 0.4),
+                                    ),
+                                  ],
                                 ),
-                                
-                                const SizedBox(height: 2), // 最小间距
-                                
-                                // 用户类型或等级
-                                if (user?.userType != null)
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: Text(
-                                      _getUserTypeText(user!.userType!),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                        height: 1.1,
-                                        shadows: [
-                                          Shadow(
-                                            offset: Offset(0, 1),
-                                            blurRadius: 1.5,
-                                            color: Color.fromRGBO(0, 0, 0, 0.4),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                              ],
+                              ),
                             ),
-                          ),
                           
-                          // 切换按钮（如果是技师）
+                          // 切换按钮（如果是技师）- 居中显示
                           if (controller.layoutType.value == 'technician')
-                            GestureDetector(
-                              onTap: () => controller.handleNavigation('technician_center'),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: Colors.white.withOpacity(0.3),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8),
+                              child: GestureDetector(
+                                onTap: () => controller.handleNavigation('technician_center'),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
                                   ),
-                                ),
-                                child: const Text(
-                                  '切换',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    shadows: [
-                                      Shadow(
-                                        offset: Offset(0, 1),
-                                        blurRadius: 2,
-                                        color: Color.fromRGBO(0, 0, 0, 0.4),
-                                      ),
-                                    ],
+                                  decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: Colors.white.withOpacity(0.3),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    '切换',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      shadows: [
+                                        Shadow(
+                                          offset: Offset(0, 1),
+                                          blurRadius: 2,
+                                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

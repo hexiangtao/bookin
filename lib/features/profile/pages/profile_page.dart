@@ -26,34 +26,44 @@ class ProfilePage extends StatelessWidget {
         
         return RefreshIndicator(
           onRefresh: controller.onRefresh,
-          child: Stack(
-            children: [
-              CustomScrollView(
-                slivers: [
-                  // 用户信息头部
-                  SliverToBoxAdapter(
-                    child: ProfileHeader(controller: controller),
-                  ),
-                  
-                  // 为钱包卡片预留空间
-                  const SliverToBoxAdapter(
-                    child: SizedBox(height: 80), // 钱包卡片高度的一部分
-                  ),
-              
-              // 订单统计卡片
+          child: CustomScrollView(
+            slivers: [
+              // 用户信息头部
               SliverToBoxAdapter(
-                child: ProfileStatsCard(controller: controller),
+                child: ProfileHeader(controller: controller),
               ),
               
-              // 根据布局类型显示不同的菜单
+              // 钱包卡片 - 添加上下边距
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ProfileWalletCard(controller: controller),
+                ),
+              ),
+          
+              // 订单统计卡片 - 添加上下边距
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ProfileStatsCard(controller: controller),
+                ),
+              ),
+              
+              // 根据布局类型显示不同的菜单 - 添加上下边距
               Obx(() {
                 if (controller.layoutType.value == 'technician') {
                   return SliverToBoxAdapter(
-                    child: ProfileMenuList(controller: controller),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ProfileMenuList(controller: controller),
+                    ),
                   );
                 } else {
                   return SliverToBoxAdapter(
-                    child: ProfileMenuGrid(controller: controller),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ProfileMenuGrid(controller: controller),
+                    ),
                   );
                 }
               }),
