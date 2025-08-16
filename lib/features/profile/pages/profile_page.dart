@@ -26,17 +26,19 @@ class ProfilePage extends StatelessWidget {
         
         return RefreshIndicator(
           onRefresh: controller.onRefresh,
-          child: CustomScrollView(
-            slivers: [
-              // 用户信息头部
-              SliverToBoxAdapter(
-                child: ProfileHeader(controller: controller),
-              ),
-              
-              // 钱包卡片
-              SliverToBoxAdapter(
-                child: ProfileWalletCard(controller: controller),
-              ),
+          child: Stack(
+            children: [
+              CustomScrollView(
+                slivers: [
+                  // 用户信息头部
+                  SliverToBoxAdapter(
+                    child: ProfileHeader(controller: controller),
+                  ),
+                  
+                  // 为钱包卡片预留空间
+                  const SliverToBoxAdapter(
+                    child: SizedBox(height: 80), // 钱包卡片高度的一部分
+                  ),
               
               // 订单统计卡片
               SliverToBoxAdapter(

@@ -18,9 +18,14 @@ class ProfileHeader extends StatelessWidget {
     return Obx(() {
       final user = controller.userInfo.value;
       
-      return Container(
-        height: 120, // 更紧凑的高度
-        child: Stack(
+      return ClipRRect(
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+        child: Container(
+          height: 180, // 进一步增加高度以解决布局溢出问题
+          child: Stack(
           children: [
             // 背景层 - 限制在容器范围内
             Positioned.fill(
@@ -36,7 +41,7 @@ class ProfileHeader extends StatelessWidget {
                   left: 16.0,
                   right: 16.0,
                   top: 0.0, // 移除顶部边距
-                  bottom: 8.0, // 最小底部边距
+                  bottom: 30.0, // 增加底部边距以避免头像被截断
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween, // 分散对齐
@@ -203,6 +208,7 @@ class ProfileHeader extends StatelessWidget {
             ),
           ],
         ),
+      ),
       );
     });
   }
@@ -218,6 +224,10 @@ class ProfileHeader extends StatelessWidget {
               image: DecorationImage(
                 image: CachedNetworkImageProvider(avatarUrl!),
                 fit: BoxFit.cover,
+              ),
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
             ),
           ),
@@ -237,6 +247,10 @@ class ProfileHeader extends StatelessWidget {
                    ],
                    stops: const [0.0, 0.6, 1.0],
                  ),
+                 borderRadius: const BorderRadius.only(
+                   bottomLeft: Radius.circular(30),
+                   bottomRight: Radius.circular(30),
+                 ),
                ),
              ),
            ),
@@ -250,14 +264,18 @@ class ProfileHeader extends StatelessWidget {
   /// 构建默认背景
   Widget _buildDefaultBackground() {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
             Color(0xFF667EEA), // 柔和的蓝色
             Color(0xFF764BA2), // 柔和的紫色
           ],
+        ),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
         ),
       ),
     );
