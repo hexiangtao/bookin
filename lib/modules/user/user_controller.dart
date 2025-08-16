@@ -41,10 +41,8 @@ class UserController extends GetxController {
   
   /// 设置当前用户信息
   void setCurrentUser(UserModel user) {
-    print('👤 Setting current user: ${user.nickname}');
     currentUser.value = user;
     isLoggedIn.value = true;
-    print('✅ User state updated successfully');
   }
 
   Future<void> logout() async {
