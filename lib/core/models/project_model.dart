@@ -19,13 +19,13 @@ class ProjectModel {
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     return ProjectModel(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? json['title'] ?? '',
-      cover: json['icon'] ?? json['image'] ?? '',
-      orderCount: json['orderCount'] ?? 0,
-      price: json['price'] ?? 0,
-      originalPrice: json['originalPrice'],
-      duration: json['timer'] ?? json['duration'] ?? 60,
+      id: int.tryParse(json['id'].toString()) ?? 0,
+      name: json['name']?.toString() ?? json['title']?.toString() ?? '',
+      cover: json['icon']?.toString() ?? json['image']?.toString() ?? '',
+      orderCount: int.tryParse(json['orderCount'].toString()) ?? 0,
+      price: int.tryParse(json['price'].toString()) ?? 0,
+      originalPrice: json['originalPrice'] != null ? int.tryParse(json['originalPrice'].toString()) : null,
+      duration: int.tryParse(json['timer']?.toString() ?? json['duration']?.toString() ?? '60') ?? 60,
     );
   }
 

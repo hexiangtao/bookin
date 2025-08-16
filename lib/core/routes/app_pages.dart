@@ -1,27 +1,46 @@
 import 'package:get/get.dart';
-
-import '../../modules/home/home_binding.dart';
-import '../../modules/home/home_page.dart';
-import 'app_routes.dart';
 import 'package:flutter/material.dart';
+
+import '../../modules/splash/splash_page.dart';
+import '../../modules/splash/splash_binding.dart';
 import '../shell/tab_shell_page.dart';
-// import '../shell/tab_shell_controller.dart';
+import '../../modules/teacher/teacher_page.dart';
+import '../../modules/teacher/teacher_binding.dart';
+import '../../features/profile/pages/profile_page.dart';
+import '../../features/profile/bindings/profile_binding.dart';
+import '../../modules/user/login_page.dart';
+import '../../modules/user/login_binding.dart';
+import '../../modules/user/password_login_page.dart';
+import '../../modules/user/password_login_controller.dart';
+import '../../modules/technician/technician_list_page.dart';
+import '../../modules/technician/technician_list_binding.dart';
+import '../../modules/technician/technician_detail_page.dart';
+import '../../modules/technician/technician_detail_binding.dart';
+import 'app_routes.dart';
+
+
 
 class AppPages {
   static final routes = <GetPage<dynamic>>[
     GetPage(
       name: AppRoutes.initial,
+      page: () => const SplashPage(),
+      binding: SplashBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashPage(),
+      binding: SplashBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.home,
       page: () => const TabShellPage(),
       // Binding moved to InitialBinding to avoid duplicate injection
     ),
     GetPage(
-      name: AppRoutes.home,
-      page: () => const HomePage(),
-      binding: HomeBinding(),
-    ),
-    GetPage(
       name: AppRoutes.teacher,
-      page: () => const _PlaceholderPage(title: '技师'),
+      page: () => const TeacherPage(),
+      binding: TeacherBinding(),
     ),
     GetPage(
       name: AppRoutes.order,
@@ -29,7 +48,28 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.user,
-      page: () => const _PlaceholderPage(title: '我的'),
+      page: () => const ProfilePage(),
+      binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.login,
+      page: () => const LoginPage(),
+      binding: LoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.passwordLogin,
+      page: () => const PasswordLoginPage(),
+      binding: PasswordLoginBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.teacherList,
+      page: () => const TechnicianListPage(),
+      binding: TechnicianListBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.teacherDetail,
+      page: () => const TechnicianDetailPage(),
+      binding: TechnicianDetailBinding(),
     ),
   ];
 }

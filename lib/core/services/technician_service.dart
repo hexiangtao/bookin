@@ -18,11 +18,12 @@ class TechnicianService {
     String? sortBy,
   }) async {
     try {
-      final response = await _apiClient.get(
+      // 使用POST请求，与H5项目保持一致
+      final response = await _apiClient.post(
         ApiEndpoints.technicians,
-        queryParameters: {
+        data: {
           'page': page,
-          'page_size': pageSize,
+          'pageSize': pageSize,
           if (category != null) 'category': category,
           if (location != null) 'location': location,
           if (sortBy != null) 'sort_by': sortBy,
@@ -31,8 +32,9 @@ class TechnicianService {
       
       if (response.statusCode == 200 && response.data != null) {
         final data = response.data;
-        if (data['success'] == true && data['data'] != null) {
-          final List<dynamic> technicianList = data['data']['items'] ?? [];
+        if ((data['code'] == 0 || data['code'] == '0' || data['success'] == true) && data['data'] != null) {
+          // H5项目返回的数据结构是 data.list
+          final List<dynamic> technicianList = data['data']['list'] ?? data['data']['items'] ?? [];
           return technicianList.map((json) => TechnicianModel.fromJson(json)).toList();
         }
       }

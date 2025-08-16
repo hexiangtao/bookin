@@ -26,13 +26,18 @@ class ApiEndpoints {
   
   // 用户相关
   static const String userProfile = '/user/profile';
+  static const String userInfo = '/user/info';
   static const String userOrders = '/user/orders';
   static const String userFavorites = '/user/favorites';
+  static const String updateUserInfo = '/user/update';
   
   // 认证相关
-  static const String login = '/auth/login';
+  static const String login = '/user/login';
+  static const String passwordLogin = '/user/password-login';
   static const String register = '/auth/register';
   static const String refreshToken = '/auth/refresh';
+  static const String sendCode = '/user/send-code';
+  static const String wechatLogin = '/auth/wechat-login';
   
   // 搜索相关
   static const String search = '/search';

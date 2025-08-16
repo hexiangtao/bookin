@@ -33,28 +33,28 @@ class CouponModel {
 
   factory CouponModel.fromJson(Map<String, dynamic> json) {
     return CouponModel(
-      id: json['id'] ?? 0,
-      name: json['name'] ?? '',
-      description: json['description'] ?? '',
-      type: json['type'] ?? 'discount',
+      id: int.tryParse(json['id'].toString()) ?? 0,
+      name: json['name']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      type: json['type']?.toString() ?? 'discount',
       // 兼容H5项目的字段名：amount 和 value
-      value: (json['amount'] ?? json['value'] ?? 0).toDouble(),
+      value: double.tryParse((json['amount'] ?? json['value'] ?? 0).toString()) ?? 0.0,
       // 兼容H5项目的字段名：minConsume 和 min_amount
-      minAmount: json['minConsume'] != null ? (json['minConsume']).toDouble() : 
-                 json['min_amount'] != null ? (json['min_amount']).toDouble() : null,
+      minAmount: json['minConsume'] != null ? double.tryParse(json['minConsume'].toString()) : 
+                 json['min_amount'] != null ? double.tryParse(json['min_amount'].toString()) : null,
       // 兼容H5项目的字段名：beginTime 和 start_time
-      startTime: DateTime.tryParse(json['beginTime'] ?? json['start_time'] ?? '') ?? DateTime.now(),
+      startTime: DateTime.tryParse(json['beginTime']?.toString() ?? json['start_time']?.toString() ?? '') ?? DateTime.now(),
       // 兼容H5项目的字段名：expireTime 和 end_time
-      endTime: DateTime.tryParse(json['expireTime'] ?? json['end_time'] ?? '') ?? DateTime.now().add(const Duration(days: 30)),
-      totalCount: json['total_count'] ?? json['totalCount'] ?? 0,
-      usedCount: json['used_count'] ?? json['usedCount'] ?? 0,
-      isReceived: json['is_received'] ?? json['isReceived'] ?? false,
-      isUsed: json['is_used'] ?? json['isUsed'] ?? false,
-      imageUrl: json['image_url'] ?? json['imageUrl'],
+      endTime: DateTime.tryParse(json['expireTime']?.toString() ?? json['end_time']?.toString() ?? '') ?? DateTime.now().add(const Duration(days: 30)),
+      totalCount: int.tryParse(json['total_count']?.toString() ?? json['totalCount']?.toString() ?? '0') ?? 0,
+      usedCount: int.tryParse(json['used_count']?.toString() ?? json['usedCount']?.toString() ?? '0') ?? 0,
+      isReceived: json['is_received'] == true || json['is_received'] == 'true' || json['isReceived'] == true || json['isReceived'] == 'true',
+      isUsed: json['is_used'] == true || json['is_used'] == 'true' || json['isUsed'] == true || json['isUsed'] == 'true',
+      imageUrl: json['image_url']?.toString() ?? json['imageUrl']?.toString(),
       applicableCategories: json['applicable_categories'] != null 
-          ? List<String>.from(json['applicable_categories']) 
+          ? List<String>.from(json['applicable_categories'].map((e) => e.toString())) 
           : json['applicableCategories'] != null
-          ? List<String>.from(json['applicableCategories'])
+          ? List<String>.from(json['applicableCategories'].map((e) => e.toString()))
           : null,
     );
   }

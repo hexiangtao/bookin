@@ -81,8 +81,10 @@ class HomeController extends GetxController {
     // 检查是否需要显示弹窗
     _checkDialogs();
     
-    // 启动banner自动轮播
-    _startBannerAutoPlay();
+    // 延迟启动banner自动轮播，确保UI已经渲染完成
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      _startBannerAutoPlay();
+    });
   }
   
   /// 加载横幅数据
@@ -183,8 +185,10 @@ class HomeController extends GetxController {
     
     isRefreshing.value = false;
     
-    // 重新启动banner自动轮播
-    _startBannerAutoPlay();
+    // 延迟重新启动banner自动轮播，确保UI已经渲染完成
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      _startBannerAutoPlay();
+    });
     
     _errorHandler.showSuccess('刷新成功');
   }
@@ -203,13 +207,34 @@ class HomeController extends GetxController {
   void _startBannerAutoPlay() {
     _bannerTimer?.cancel();
     if (banners.length > 1) {
-      _bannerTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
-        final nextIndex = (bannerIndex.value + 1) % banners.length;
-        pageController.animateToPage(
-          nextIndex,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+      // 延迟启动，确保PageView已经渲染完成
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        // 多重检查确保PageController已正确附加
+        if (pageController.hasClients && 
+            pageController.positions.isNotEmpty && 
+            banners.isNotEmpty) {
+          _bannerTimer = Timer.periodic(const Duration(seconds: 3), (timer) {
+            // 每次执行前都检查状态
+            if (banners.isNotEmpty && 
+                pageController.hasClients && 
+                pageController.positions.isNotEmpty) {
+              try {
+                final nextIndex = (bannerIndex.value + 1) % banners.length;
+                pageController.animateToPage(
+                  nextIndex,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
+                );
+                bannerIndex.value = nextIndex;
+              } catch (e) {
+                print('Banner auto play error: $e');
+                timer.cancel();
+              }
+            } else {
+              timer.cancel();
+            }
+          });
+        }
       });
     }
   }
@@ -249,6 +274,16 @@ class HomeController extends GetxController {
   /// 关闭优惠券弹窗
   void closeCouponDialog() {
     showCouponDialog.value = false;
+  }
+  
+  /// 跳转到技师列表
+  void goToTechnicianList() {
+    Get.toNamed('/teacher/list');
+  }
+  
+  /// 跳转到技师详情
+  void goToTechnicianDetail(dynamic technician) {
+    Get.toNamed('/teacher/detail', arguments: technician);
   }
   
   /// 领取优惠券

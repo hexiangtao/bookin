@@ -7,7 +7,7 @@ part of 'user_model.dart';
 // **************************************************************************
 
 UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
-  id: json['id'] as String,
+  id: UserModel._idFromJson(json['id']),
   phone: json['phone'] as String,
   nickname: json['nickname'] as String,
   avatar: json['avatar'] as String?,
@@ -26,7 +26,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
       : DateTime.parse(json['lastLoginAt'] as String),
   status: (json['status'] as num?)?.toInt() ?? 0,
   referralCode: json['referralCode'] as String?,
-  referrerId: json['referrerId'] as String?,
+  referrerId: UserModel._referrerIdFromJson(json['referrerId']),
   tags: (json['tags'] as List<dynamic>?)?.map((e) => e as String).toList(),
   preferences: json['preferences'] == null
       ? null
@@ -34,6 +34,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) => UserModel(
   statistics: json['statistics'] == null
       ? null
       : UserStatistics.fromJson(json['statistics'] as Map<String, dynamic>),
+  userType: json['userType'] as String?,
 );
 
 Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
@@ -56,6 +57,7 @@ Map<String, dynamic> _$UserModelToJson(UserModel instance) => <String, dynamic>{
   'tags': instance.tags,
   'preferences': instance.preferences,
   'statistics': instance.statistics,
+  'userType': instance.userType,
 };
 
 UserPreferences _$UserPreferencesFromJson(Map<String, dynamic> json) =>

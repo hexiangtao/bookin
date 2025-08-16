@@ -81,6 +81,12 @@ dependencies:
   
   # Package info
   package_info_plus: ^8.0.2
+  
+  # Cached network image
+  cached_network_image: ^3.4.1
+  
+  # Color extraction from images
+  palette_generator: ^0.3.3+4
 
 dev_dependencies:
   flutter_test:

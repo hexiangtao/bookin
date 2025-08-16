@@ -6,8 +6,15 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel {
   /// 用户ID
-  @JsonKey(name: 'id')
+  @JsonKey(name: 'id', fromJson: _idFromJson)
   final String id;
+  
+  static String _idFromJson(dynamic value) {
+    if (value is int) {
+      return value.toString();
+    }
+    return value as String;
+  }
   
   /// 手机号
   @JsonKey(name: 'phone')
@@ -66,8 +73,16 @@ class UserModel {
   final String? referralCode;
   
   /// 推荐人ID
-  @JsonKey(name: 'referrerId')
+  @JsonKey(name: 'referrerId', fromJson: _referrerIdFromJson)
   final String? referrerId;
+  
+  static String? _referrerIdFromJson(dynamic value) {
+    if (value == null) return null;
+    if (value is int) {
+      return value.toString();
+    }
+    return value as String;
+  }
   
   /// 用户标签
   @JsonKey(name: 'tags')
@@ -80,6 +95,10 @@ class UserModel {
   /// 用户统计信息
   @JsonKey(name: 'statistics')
   final UserStatistics? statistics;
+  
+  /// 用户类型 (customer: 客户, technician: 技师)
+  @JsonKey(name: 'userType')
+  final String? userType;
   
   const UserModel({
     required this.id,
@@ -101,6 +120,7 @@ class UserModel {
     this.tags,
     this.preferences,
     this.statistics,
+    this.userType,
   });
   
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
@@ -144,6 +164,9 @@ class UserModel {
   
   /// 是否为正常状态
   bool get isActive => status == 0;
+  
+  /// 是否为技师
+  bool get isTechnician => userType == 'technician';
   
   /// 是否已完善个人信息
   bool get isProfileComplete {

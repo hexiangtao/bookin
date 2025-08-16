@@ -26,6 +26,8 @@ class ApiClient {
       },
     ));
 
+
+
     // 添加拦截器
     _dio.interceptors.add(_createInterceptor());
 
@@ -56,30 +58,30 @@ class ApiClient {
                                        AppConfig.isIOS ? 'ios' : 'web';
         
         if (AppConfig.enableApiLog) {
-          print('🚀 [${DateTime.now()}] Request: ${options.method} ${options.uri}');
-          print('📤 Headers: ${options.headers}');
+          print('[${DateTime.now()}] Request: ${options.method} ${options.uri}');
+          print('Headers: ${options.headers}');
           if (options.data != null) {
-            print('📦 Data: ${options.data}');
+            print('Data: ${options.data}');
           }
           if (options.queryParameters.isNotEmpty) {
-            print('🔍 Query: ${options.queryParameters}');
+            print('Query: ${options.queryParameters}');
           }
         }
         handler.next(options);
       },
       onResponse: (response, handler) {
         if (AppConfig.enableApiLog) {
-          print('✅ [${DateTime.now()}] Response: ${response.statusCode} ${response.requestOptions.uri}');
-          print('📥 Data: ${response.data}');
+          print('[${DateTime.now()}] Response: ${response.statusCode} ${response.requestOptions.uri}');
+          print('Data: ${response.data}');
         }
         handler.next(response);
       },
       onError: (error, handler) {
         if (AppConfig.enableApiLog) {
-          print('❌ [${DateTime.now()}] Error: ${error.requestOptions.method} ${error.requestOptions.uri}');
-          print('💥 Status: ${error.response?.statusCode}');
-          print('📄 Message: ${error.message}');
-          print('🔍 Response: ${error.response?.data}');
+          print('[${DateTime.now()}] Error: ${error.requestOptions.method} ${error.requestOptions.uri}');
+          print('Status: ${error.response?.statusCode}');
+          print('Message: ${error.message}');
+          print('Response: ${error.response?.data}');
         }
         _handleError(error);
         handler.next(error);

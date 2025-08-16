@@ -12,6 +12,7 @@ class TabShellPage extends GetView<TabShellController> {
 
   @override
   Widget build(BuildContext context) {
+    print('🏗️ Building TabShellPage');
     return Scaffold(
       body: Obx(() => IndexedStack(
         index: controller.currentIndex.value,

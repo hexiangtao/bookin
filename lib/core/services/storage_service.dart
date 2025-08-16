@@ -13,13 +13,14 @@ class StorageService {
   GetStorage get box => _box;
 
   /// 初始化存储服务
-  Future<void> init() async {
+  Future<StorageService> init() async {
     await GetStorage.init();
     _box = GetStorage();
     
     if (AppConfig.enableApiLog) {
       print('📦 Storage Service initialized');
     }
+    return this;
   }
 
   // ==================== 用户相关 ====================

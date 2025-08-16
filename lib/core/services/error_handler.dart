@@ -82,8 +82,7 @@ class ErrorHandler {
     );
     
     // 跳转到登录页面
-    // TODO: 实现跳转到登录页面
-    // Get.offAllNamed(AppRoutes.login);
+    Get.offAllNamed('/login');
   }
 
   /// 显示加载对话框

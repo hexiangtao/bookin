@@ -1,5 +1,6 @@
 class AppRoutes {
   static const String initial = '/';
+  static const String splash = '/splash';
   static const String home = '/home';
   
   // TabBar 主页面
@@ -33,5 +34,6 @@ class AppRoutes {
   
   // 登录认证
   static const String login = '/login';
+  static const String passwordLogin = '/password-login';
   static const String register = '/register';
 }

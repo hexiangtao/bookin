@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 
-import '../../shared/services/storage_service.dart';
+import '../services/storage_service.dart';
 import '../shell/tab_shell_controller.dart';
 import '../../modules/home/home_controller.dart';
 import '../../modules/user/user_controller.dart';
+import '../../modules/technician/technician_controller.dart';
 
 class InitialBinding extends Bindings {
   @override
@@ -12,5 +13,6 @@ class InitialBinding extends Bindings {
     Get.put<TabShellController>(TabShellController(), permanent: true);
     Get.lazyPut<HomeController>(() => HomeController());
     Get.lazyPut<UserController>(() => UserController());
+    Get.lazyPut<TechnicianController>(() => TechnicianController());
   }
 }

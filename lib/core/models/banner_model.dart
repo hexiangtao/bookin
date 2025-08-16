@@ -19,13 +19,13 @@ class BannerModel {
 
   factory BannerModel.fromJson(Map<String, dynamic> json) {
     return BannerModel(
-      id: json['id'] ?? 0,
-      title: json['title'] ?? '',
-      imageUrl: json['imageUrl'] ?? json['image'] ?? '',
-      linkUrl: json['linkUrl'] ?? json['link'],
-      linkType: json['linkType'],
-      isActive: json['isActive'] ?? json['status'] == 1,
-      sort: json['sort'] ?? 0,
+      id: int.tryParse(json['id'].toString()) ?? 0,
+      title: json['title']?.toString() ?? '',
+      imageUrl: json['imageUrl']?.toString() ?? json['image']?.toString() ?? '',
+      linkUrl: json['linkUrl']?.toString() ?? json['link']?.toString(),
+      linkType: json['linkType']?.toString(),
+      isActive: json['isActive'] == true || json['isActive'] == 'true' || json['status'] == 1 || json['status'] == '1',
+      sort: int.tryParse(json['sort'].toString()) ?? 0,
     );
   }
 

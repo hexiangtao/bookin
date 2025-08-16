@@ -25,16 +25,16 @@ class AnnouncementModel {
 
   factory AnnouncementModel.fromJson(Map<String, dynamic> json) {
     return AnnouncementModel(
-      id: json['id'] ?? 0,
-      title: json['title'] ?? '',
-      content: json['content'] ?? '',
-      imageUrl: json['image_url'],
-      linkUrl: json['link_url'],
-      createdAt: DateTime.tryParse(json['created_at'] ?? '') ?? DateTime.now(),
-      expiredAt: json['expired_at'] != null ? DateTime.tryParse(json['expired_at']) : null,
-      isActive: json['is_active'] ?? false,
-      priority: json['priority'] ?? 0,
-      type: json['type'] ?? 'text',
+      id: int.tryParse(json['id'].toString()) ?? 0,
+      title: json['title']?.toString() ?? '',
+      content: json['content']?.toString() ?? '',
+      imageUrl: json['image_url']?.toString(),
+      linkUrl: json['link_url']?.toString(),
+      createdAt: DateTime.tryParse(json['created_at']?.toString() ?? '') ?? DateTime.now(),
+      expiredAt: json['expired_at'] != null ? DateTime.tryParse(json['expired_at'].toString()) : null,
+      isActive: json['is_active'] == true || json['is_active'] == 'true' || json['is_active'] == 1,
+      priority: int.tryParse(json['priority'].toString()) ?? 0,
+      type: json['type']?.toString() ?? 'text',
     );
   }
 

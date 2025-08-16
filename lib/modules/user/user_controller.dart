@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
-import '../../shared/models/user_model.dart';
-import '../../shared/services/storage_service.dart';
+import '../../core/models/user_model.dart';
+import '../../core/services/storage_service.dart';
+import '../../core/services/auth_service.dart';
 
 class UserController extends GetxController {
   final Rxn<UserModel> currentUser = Rxn<UserModel>();
@@ -16,51 +17,53 @@ class UserController extends GetxController {
   }
 
   Future<void> _loadUserFromStorage() async {
-    final userData = await _storage.getUser();
-    if (userData != null) {
+    final userData = StorageService().getUserInfo();
+    final isUserLoggedIn = await AuthService.instance.isLoggedIn();
+    
+    print('🔍 Loading user from storage - userData: ${userData != null}, isLoggedIn: $isUserLoggedIn');
+    
+    if (userData != null && isUserLoggedIn) {
       currentUser.value = userData;
       isLoggedIn.value = true;
+      print('✅ User loaded successfully');
+    } else {
+      print('⚠️ User data or token invalid, but not auto-logging out to avoid conflicts');
+      // 不自动登出，避免与登录流程冲突
+      currentUser.value = null;
+      isLoggedIn.value = false;
     }
   }
 
-  Future<bool> login(String phone, String password) async {
-    loading.value = true;
-    try {
-      // TODO: 调用登录API
-      await Future.delayed(const Duration(seconds: 1));
-      
-      // 模拟登录成功
-      final user = UserModel(
-        id: '1',
-        name: '用户${phone.substring(7)}',
-        phone: phone,
-        avatar: 'https://via.placeholder.com/100',
-      );
-      
-      // 模拟token（实际项目中应该从API响应中获取）
-      const mockToken = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
-      
-      await _storage.saveUser(user);
-      await _storage.saveToken(mockToken);
-      currentUser.value = user;
-      isLoggedIn.value = true;
-      
-      Get.snackbar('登录成功', '欢迎回来！');
-      return true;
-    } catch (e) {
-      Get.snackbar('登录失败', e.toString());
-      return false;
-    } finally {
-      loading.value = false;
-    }
+  /// 更新用户登录状态（由AuthService调用）
+  Future<void> updateLoginStatus() async {
+    await _loadUserFromStorage();
+  }
+  
+  /// 设置当前用户信息
+  void setCurrentUser(UserModel user) {
+    print('👤 Setting current user: ${user.nickname}');
+    currentUser.value = user;
+    isLoggedIn.value = true;
+    print('✅ User state updated successfully');
   }
 
   Future<void> logout() async {
-    await _storage.clearUser();
-    await _storage.removeToken();
-    currentUser.value = null;
-    isLoggedIn.value = false;
-    Get.snackbar('已退出', '您已成功退出登录');
+    try {
+      // 调用AuthService的登出方法
+      await AuthService.instance.logout();
+      
+      // 清除本地状态
+      currentUser.value = null;
+      isLoggedIn.value = false;
+      
+      // 跳转到登录页面
+      Get.offAllNamed('/login');
+    } catch (e) {
+      print('Logout error: $e');
+      // 即使出错也要清除本地状态
+      currentUser.value = null;
+      isLoggedIn.value = false;
+    }
   }
 
   Future<void> updateProfile(UserModel updatedUser) async {
@@ -69,7 +72,7 @@ class UserController extends GetxController {
       // TODO: 调用更新用户信息API
       await Future.delayed(const Duration(seconds: 1));
       
-      await _storage.saveUser(updatedUser);
+      await StorageService().saveUserInfo(updatedUser);
       currentUser.value = updatedUser;
       
       Get.snackbar('保存成功', '个人信息已更新');

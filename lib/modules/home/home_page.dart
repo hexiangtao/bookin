@@ -343,8 +343,7 @@ class HomePage extends GetView<HomeController> {
       child: Column(
         children: [
           _buildSectionHeader(Icons.group, '精选技师', '查看全部', () {
-            // 跳转到技师列表 -> 切换到底部导航的“技师”Tab
-            Get.find<TabShellController>().changeTab(1);
+            controller.goToTechnicianList();
           }),
           Obx(() {
             // 显示加载状态
@@ -466,10 +465,12 @@ class HomePage extends GetView<HomeController> {
   }
 
   Widget _buildTechnicianCard(dynamic tech) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+    return GestureDetector(
+      onTap: () => controller.goToTechnicianDetail(tech),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
           Stack(
             children: [
               ClipRRect(
@@ -573,7 +574,8 @@ class HomePage extends GetView<HomeController> {
             ),
           ),
         ],
-      );
+      ),
+    );
   }
 
   Widget _buildProjectList() {
