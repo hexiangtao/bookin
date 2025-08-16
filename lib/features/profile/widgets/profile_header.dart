@@ -241,7 +241,7 @@ class ProfileHeader extends StatelessWidget {
           ),
           // 模糊效果层
            BackdropFilter(
-             filter: ImageFilter.blur(sigmaX: 25.0, sigmaY: 25.0),
+             filter: ImageFilter.blur(sigmaX: 35.0, sigmaY: 35.0),
              child: Container(
                decoration: BoxDecoration(
                  color: Colors.black.withOpacity(0.4),
