@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../controllers/profile_controller.dart';
 import '../widgets/profile_header.dart';
 import '../widgets/profile_menu_grid.dart';
@@ -16,7 +17,7 @@ class ProfilePage extends StatelessWidget {
     final controller = Get.put(ProfileController());
     
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA), // 更柔和的背景色
+      backgroundColor: AppColors.background, // 使用统一的背景色
       body: Obx(() {
         if (controller.isLoading.value && controller.userInfo.value == null) {
           return const Center(

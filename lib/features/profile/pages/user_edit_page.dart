@@ -5,6 +5,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../controllers/user_edit_controller.dart';
 import '../widgets/edit_text_dialog.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
+import '../../../core/config/app_config.dart';
 import '../../../shared/widgets/custom_app_bar.dart';
 
 class UserEditPage extends StatelessWidget {
@@ -15,11 +17,11 @@ class UserEditPage extends StatelessWidget {
     final controller = Get.find<UserEditController>();
     
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F9FA),
+      backgroundColor: AppColors.background,
       appBar: CustomAppBar(
         title: '编辑资料',
         showBack: true,
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         elevation: 0,
         actions: [
           Obx(() => Container(
@@ -31,14 +33,14 @@ class UserEditPage extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: controller.hasChanges.value
                     ? AppColors.primary
-                    : Colors.grey[300],
+                    : AppColors.surfaceVariant,
                 foregroundColor: controller.hasChanges.value
-                    ? Colors.white
-                    : Colors.grey[500],
+                    ? AppColors.surface
+                    : AppColors.textDisabled,
                 elevation: 0,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
                 ),
                 minimumSize: const Size(60, 32),
               ),
@@ -97,14 +99,14 @@ class UserEditPage extends StatelessWidget {
   /// 构建头像区域
   Widget _buildAvatarSection(UserEditController controller) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.all(24),
+      margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
+      padding: EdgeInsets.all(AppConfig.defaultPadding * 1.5),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.shadow,
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -178,7 +180,7 @@ class UserEditPage extends StatelessWidget {
                       ),
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.white,
+                        color: AppColors.surface,
                         width: 3,
                       ),
                       boxShadow: [
@@ -189,9 +191,9 @@ class UserEditPage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.camera_alt_rounded,
-                      color: Colors.white,
+                      color: AppColors.surface,
                       size: 18,
                     ),
                   ),
@@ -202,18 +204,16 @@ class UserEditPage extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             '点击更换头像',
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.grey[600],
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
               fontWeight: FontWeight.w500,
             ),
           ),
           const SizedBox(height: 4),
           Text(
             '支持JPG、PNG格式，文件大小不超过5MB',
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[500],
+            style: AppTextStyles.bodySmall.copyWith(
+              color: AppColors.textTertiary,
             ),
           ),
         ],
@@ -224,13 +224,13 @@ class UserEditPage extends StatelessWidget {
   /// 构建基本信息区域
   Widget _buildBasicInfoSection(UserEditController controller) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.shadow,
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -240,7 +240,7 @@ class UserEditPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+            padding: EdgeInsets.fromLTRB(AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding),
             child: Row(
               children: [
                 Container(
@@ -252,12 +252,10 @@ class UserEditPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Text(
+                Text(
                   '基本信息',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
+                  style: AppTextStyles.h3.copyWith(
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -271,16 +269,15 @@ class UserEditPage extends StatelessWidget {
               controller.nickname.value.isEmpty 
                   ? '请输入昵称'
                   : controller.nickname.value,
-              style: TextStyle(
-                fontSize: 16,
+              style: AppTextStyles.bodyLarge.copyWith(
                 color: controller.nickname.value.isEmpty 
-                    ? Colors.grey[500]
-                    : Colors.black87,
+                    ? AppColors.textTertiary
+                    : AppColors.textPrimary,
               ),
             )),
-            trailing: const Icon(
+            trailing: Icon(
               Icons.chevron_right,
-              color: Colors.grey,
+              color: AppColors.textTertiary,
             ),
             onTap: () => _showEditNicknameDialog(controller),
           ),
@@ -292,22 +289,20 @@ class UserEditPage extends StatelessWidget {
             label: '手机号',
             child: Text(
               controller.userInfo.value?.phone ?? '',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.textSecondary,
               ),
             ),
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.green.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(4),
+                color: AppColors.success.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius / 2),
               ),
-              child: const Text(
+              child: Text(
                 '已验证',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.green,
+                style: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.success,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -326,9 +321,8 @@ class UserEditPage extends StatelessWidget {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.zero,
               ),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.textPrimary,
               ),
               keyboardType: TextInputType.emailAddress,
             ),
@@ -341,14 +335,13 @@ class UserEditPage extends StatelessWidget {
             label: '性别',
             child: Text(
               controller.getGenderText(controller.selectedGender.value),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.textPrimary,
               ),
             ),
-            trailing: const Icon(
+            trailing: Icon(
               Icons.chevron_right,
-              color: Colors.grey,
+              color: AppColors.textTertiary,
             ),
             onTap: () => _showGenderPicker(controller),
           )),
@@ -360,14 +353,13 @@ class UserEditPage extends StatelessWidget {
             label: '生日',
             child: Text(
               controller.getBirthdayText(),
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
+              style: AppTextStyles.bodyLarge.copyWith(
+                color: AppColors.textPrimary,
               ),
             ),
-            trailing: const Icon(
+            trailing: Icon(
               Icons.chevron_right,
-              color: Colors.grey,
+              color: AppColors.textTertiary,
             ),
             onTap: controller.selectBirthday,
           )),
@@ -406,13 +398,13 @@ class UserEditPage extends StatelessWidget {
   /// 构建隐私设置区域
   Widget _buildPrivacySection(UserEditController controller) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.shadow,
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -422,24 +414,22 @@ class UserEditPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+            padding: EdgeInsets.fromLTRB(AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding),
             child: Row(
               children: [
                 Container(
                   width: 4,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    color: AppColors.warning,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Text(
+                Text(
                   '隐私设置',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
+                  style: AppTextStyles.h3.copyWith(
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -480,13 +470,13 @@ class UserEditPage extends StatelessWidget {
   /// 构建通知设置区域
   Widget _buildNotificationSection(UserEditController controller) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: AppColors.shadow,
             blurRadius: 20,
             offset: const Offset(0, 4),
           ),
@@ -496,24 +486,22 @@ class UserEditPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 16),
+            padding: EdgeInsets.fromLTRB(AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding),
             child: Row(
               children: [
                 Container(
                   width: 4,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: AppColors.success,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 const SizedBox(width: 12),
-                const Text(
+                Text(
                   '通知设置',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.black87,
+                  style: AppTextStyles.h3.copyWith(
+                    color: AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -571,18 +559,17 @@ class UserEditPage extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+          padding: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding * 1.5, vertical: AppConfig.defaultPadding * 1.125),
           child: Row(
             children: [
               SizedBox(
                 width: 85,
                 child: Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -612,7 +599,7 @@ class UserEditPage extends StatelessWidget {
     required ValueChanged<bool> onChanged,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+      padding: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding * 1.5, vertical: AppConfig.defaultPadding),
       child: Row(
         children: [
           Expanded(
@@ -621,18 +608,16 @@ class UserEditPage extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: AppColors.textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 6),
                 Text(
                   subtitle,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey[600],
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: AppColors.textSecondary,
                     height: 1.3,
                   ),
                 ),
@@ -647,8 +632,8 @@ class UserEditPage extends StatelessWidget {
               onChanged: onChanged,
               activeColor: AppColors.primary,
               activeTrackColor: AppColors.primary.withOpacity(0.3),
-              inactiveThumbColor: Colors.grey[400],
-              inactiveTrackColor: Colors.grey[200],
+              inactiveThumbColor: AppColors.textTertiary,
+              inactiveTrackColor: AppColors.surfaceVariant,
             ),
           ),
         ],
@@ -659,9 +644,9 @@ class UserEditPage extends StatelessWidget {
   /// 构建分割线
   Widget _buildDivider() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 24),
+      margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding * 1.5),
       height: 0.5,
-      color: Colors.grey[150],
+      color: AppColors.divider,
     );
   }
   
@@ -669,10 +654,10 @@ class UserEditPage extends StatelessWidget {
   void _showGenderPicker(UserEditController controller) {
     Get.bottomSheet(
       Container(
-        padding: const EdgeInsets.all(20),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        padding: EdgeInsets.all(AppConfig.defaultPadding * 1.25),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.vertical(top: Radius.circular(AppConfig.defaultBorderRadius * 1.5)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -681,17 +666,15 @@ class UserEditPage extends StatelessWidget {
               width: 48,
               height: 5,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
+                color: AppColors.surfaceVariant,
                 borderRadius: BorderRadius.circular(3),
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
+            Text(
               '选择性别',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Colors.black87,
+              style: AppTextStyles.h2.copyWith(
+                color: AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 24),
@@ -722,16 +705,16 @@ class UserEditPage extends StatelessWidget {
           controller.selectGender(gender);
           Get.back();
         },
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
         child: Container(
           width: double.infinity,
           margin: const EdgeInsets.symmetric(vertical: 4),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+          padding: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding * 1.25, vertical: AppConfig.defaultPadding * 1.125),
           decoration: BoxDecoration(
             color: controller.selectedGender.value == gender
                 ? AppColors.primary.withOpacity(0.08)
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
             border: controller.selectedGender.value == gender ? Border.all(
               color: AppColors.primary.withOpacity(0.3),
               width: 1.5,
@@ -742,11 +725,10 @@ class UserEditPage extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: TextStyle(
-                    fontSize: 17,
+                  style: AppTextStyles.bodyLarge.copyWith(
                     color: controller.selectedGender.value == gender
                         ? AppColors.primary
-                        : Colors.black87,
+                        : AppColors.textPrimary,
                     fontWeight: controller.selectedGender.value == gender
                         ? FontWeight.w600
                         : FontWeight.w500,
@@ -760,9 +742,9 @@ class UserEditPage extends StatelessWidget {
                     color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.check,
-                    color: Colors.white,
+                    color: AppColors.surface,
                     size: 16,
                   ),
                 ),
@@ -775,21 +757,214 @@ class UserEditPage extends StatelessWidget {
   
   /// 显示编辑昵称对话框
   void _showEditNicknameDialog(UserEditController controller) {
-    showEditNicknameDialog(
-      initialValue: controller.nicknameController.text,
-      onConfirm: (value) {
-        controller.nicknameController.text = value;
-      },
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          margin: EdgeInsets.all(AppConfig.defaultMargin),
+          padding: EdgeInsets.all(AppConfig.defaultPadding * 1.5),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 1.5),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '编辑昵称',
+                style: AppTextStyles.h2.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: TextEditingController(text: controller.nicknameController.text),
+                maxLength: 20,
+                decoration: InputDecoration(
+                  hintText: '请输入昵称',
+                  hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textTertiary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                    borderSide: BorderSide(color: AppColors.border),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                    borderSide: BorderSide(color: AppColors.primary, width: 2),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding, vertical: AppConfig.defaultPadding * 0.875),
+                ),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+                onChanged: (value) {
+                  controller.nicknameController.text = value;
+                },
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.textSecondary,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConfig.defaultPadding * 1.5,
+                        vertical: AppConfig.defaultPadding,
+                      ),
+                    ),
+                    child: Text(
+                      '取消',
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.surface,
+                      elevation: 0,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConfig.defaultPadding * 1.5,
+                        vertical: AppConfig.defaultPadding,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                      ),
+                    ),
+                    child: Text(
+                      '确定',
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
   
   /// 显示编辑个人简介对话框
   void _showEditBioDialog(UserEditController controller) {
-    showEditBioDialog(
-      initialValue: controller.bioController.text,
-      onConfirm: (value) {
-        controller.bioController.text = value;
-      },
+    Get.dialog(
+      Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          margin: EdgeInsets.all(AppConfig.defaultMargin),
+          padding: EdgeInsets.all(AppConfig.defaultPadding * 1.5),
+          decoration: BoxDecoration(
+            color: AppColors.surface,
+            borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 1.5),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                blurRadius: 20,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '编辑个人简介',
+                style: AppTextStyles.h2.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              const SizedBox(height: 20),
+              TextField(
+                controller: TextEditingController(text: controller.bioController.text),
+                maxLines: 4,
+                maxLength: 200,
+                decoration: InputDecoration(
+                  hintText: '请输入个人简介',
+                  hintStyle: AppTextStyles.bodyMedium.copyWith(color: AppColors.textTertiary),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                    borderSide: BorderSide(color: AppColors.border),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                    borderSide: BorderSide(color: AppColors.primary, width: 2),
+                  ),
+                  contentPadding: EdgeInsets.all(AppConfig.defaultPadding),
+                ),
+                style: AppTextStyles.bodyLarge.copyWith(
+                  color: AppColors.textPrimary,
+                ),
+                onChanged: (value) {
+                  controller.bioController.text = value;
+                },
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    style: TextButton.styleFrom(
+                      foregroundColor: AppColors.textSecondary,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConfig.defaultPadding * 1.5,
+                        vertical: AppConfig.defaultPadding,
+                      ),
+                    ),
+                    child: Text(
+                      '取消',
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  ElevatedButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.surface,
+                      elevation: 0,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: AppConfig.defaultPadding * 1.5,
+                        vertical: AppConfig.defaultPadding,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                      ),
+                    ),
+                    child: Text(
+                      '确定',
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

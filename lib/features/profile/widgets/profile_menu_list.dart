@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileMenuList extends StatelessWidget {
@@ -38,11 +40,11 @@ class ProfileMenuList extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.blackWithOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -106,9 +108,8 @@ class ProfileMenuList extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               label,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Color(0xFF666666),
+              style: AppTextStyles.label.copyWith(
+                color: AppColors.textSecondary,
               ),
             ),
           ],
@@ -120,11 +121,11 @@ class ProfileMenuList extends StatelessWidget {
   Widget _buildTechnicianMenu() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColors.blackWithOpacity(0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -210,16 +211,18 @@ class ProfileMenuList extends StatelessWidget {
               child: Text(
                 label,
                 style: const TextStyle(
-                  fontSize: 16,
-                  color: Color(0xFF333333),
+                  fontSize: 14,
+                  fontWeight: FontWeight.normal,
+                  color: AppColors.textPrimary,
+                  height: 1.4,
                 ),
               ),
             ),
             if (showArrow)
-              const Icon(
+              Icon(
                 Icons.arrow_forward_ios,
                 size: 16,
-                color: Color(0xFF999999),
+                color: AppColors.textTertiary,
               ),
           ],
         ),
@@ -231,7 +234,7 @@ class ProfileMenuList extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(left: 60),
       height: 1,
-      color: const Color(0xFFF5F5F5),
+      color: AppColors.divider,
     );
   }
   
@@ -242,20 +245,20 @@ class ProfileMenuList extends StatelessWidget {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: const Color(0xFFFF6B6B).withOpacity(0.3),
+            color: AppColors.error.withOpacity(0.3),
           ),
         ),
         child: const Text(
           '退出登录',
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 16,
-            color: Color(0xFFFF6B6B),
-            fontWeight: FontWeight.w500,
-          ),
+             fontSize: 14,
+             fontWeight: FontWeight.w600,
+             color: AppColors.error,
+           ),
         ),
       ),
     );

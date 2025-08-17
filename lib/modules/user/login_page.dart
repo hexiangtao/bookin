@@ -12,20 +12,18 @@ class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           '手机号登录',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
+          style: AppTextStyles.h3.copyWith(
+            color: AppColors.textPrimary,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
@@ -44,10 +42,8 @@ class LoginPage extends GetView<LoginController> {
                     // 页面标题
                     Text(
                       '手机号登录',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                      style: AppTextStyles.h1.copyWith(
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     
@@ -157,11 +153,10 @@ class LoginPage extends GetView<LoginController> {
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                       child: Text(
                         controller.codeButtonText.value,
-                        style: TextStyle(
+                        style: AppTextStyles.bodyMedium.copyWith(
                           color: controller.canSendCode.value 
-                              ? const Color(0xFFFF6B9D) 
-                              : Colors.grey.shade400,
-                          fontSize: 14,
+                              ? AppColors.secondary 
+                              : AppColors.textDisabled,
                         ),
                       ),
                     ),
@@ -182,9 +177,9 @@ class LoginPage extends GetView<LoginController> {
             onPressed: controller.canLogin ? controller.loginWithPhone : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: controller.canLogin 
-                  ? const Color(0xFFFF6B9D)
-                  : Colors.grey.shade300,
-              foregroundColor: Colors.white,
+                  ? AppColors.secondary
+                  : AppColors.textDisabled,
+              foregroundColor: AppColors.surface,
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(24),
@@ -196,14 +191,13 @@ class LoginPage extends GetView<LoginController> {
                     height: 20,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.surface),
                     ),
                   )
-                : const Text(
+                : Text(
                     '登录',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
+                    style: AppTextStyles.buttonMedium.copyWith(
+                      color: AppColors.surface,
                     ),
                   ),
           ),
@@ -216,9 +210,8 @@ class LoginPage extends GetView<LoginController> {
           onTap: controller.showPasswordLogin,
           child: Text(
             '密码登录',
-            style: TextStyle(
-              color: Colors.grey.shade600,
-              fontSize: 14,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textSecondary,
               decoration: TextDecoration.underline,
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../core/theme/app_colors.dart';
 import 'home_controller.dart';
 import '../../core/shell/tab_shell_controller.dart';
 import 'widgets/announcement_banner.dart';
@@ -13,7 +14,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF8F8F8),
+      backgroundColor: AppColors.background,
       body: Stack(
         children: [
           Column(
@@ -138,7 +139,7 @@ class HomePage extends GetView<HomeController> {
     return Container(
       height: 90,
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
+        color: AppColors.surface.withOpacity(0.9),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -272,7 +273,7 @@ class HomePage extends GetView<HomeController> {
       margin: const EdgeInsets.fromLTRB(15, 10, 15, 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(

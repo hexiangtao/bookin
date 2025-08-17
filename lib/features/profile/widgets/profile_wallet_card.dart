@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileWalletCard extends StatelessWidget {
@@ -107,7 +109,7 @@ class ProfileWalletCard extends StatelessWidget {
               Container(
                 width: 1,
                 height: 40,
-                color: Colors.white.withOpacity(0.3),
+                color: AppColors.whiteWithOpacity(0.3),
               ),
               
               const SizedBox(width: 20),
@@ -116,11 +118,10 @@ class ProfileWalletCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
+                    Text(
                       '优惠券',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
+                      style: AppTextStyles.label.copyWith(
+                        color: AppColors.whiteWithOpacity(0.7),
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -130,16 +131,15 @@ class ProfileWalletCard extends StatelessWidget {
                         children: [
                           Obx(() => Text(
                             '${controller.couponCount.value}张',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
+                            style: AppTextStyles.h3.copyWith(
+                              color: AppColors.surface,
                               fontWeight: FontWeight.bold,
                             ),
                           )),
                           const SizedBox(width: 4),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios,
-                            color: Colors.white70,
+                            color: AppColors.whiteWithOpacity(0.7),
                             size: 12,
                           ),
                         ],

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_text_styles.dart';
 import '../controllers/profile_controller.dart';
 
 class ProfileHeader extends StatelessWidget {
@@ -68,12 +70,12 @@ class ProfileHeader extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     color: controller.getUserAvatarBackground(),
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.4),
+                                      color: AppColors.whiteWithOpacity(0.4),
                                       width: 2,
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
+                                        color: AppColors.blackWithOpacity(0.2),
                                         blurRadius: 6,
                                         offset: const Offset(0, 2),
                                       ),
@@ -152,20 +154,19 @@ class ProfileHeader extends StatelessWidget {
                                 vertical: 3,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
+                                color: AppColors.whiteWithOpacity(0.2),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 _getUserTypeText(user!.userType!),
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
+                                style: AppTextStyles.label.copyWith(
+                                  color: AppColors.surface,
                                   height: 1.1,
                                   shadows: [
                                     Shadow(
-                                      offset: Offset(0, 1),
+                                      offset: const Offset(0, 1),
                                       blurRadius: 1.5,
-                                      color: Color.fromRGBO(0, 0, 0, 0.4),
+                                      color: AppColors.blackWithOpacity(0.4),
                                     ),
                                   ],
                                 ),
@@ -184,22 +185,21 @@ class ProfileHeader extends StatelessWidget {
                                     vertical: 6,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
+                                    color: AppColors.whiteWithOpacity(0.2),
                                     borderRadius: BorderRadius.circular(16),
                                     border: Border.all(
-                                      color: Colors.white.withOpacity(0.3),
+                                      color: AppColors.whiteWithOpacity(0.3),
                                     ),
                                   ),
-                                  child: const Text(
+                                  child: Text(
                                     '切换',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
+                                    style: AppTextStyles.label.copyWith(
+                                      color: AppColors.surface,
                                       shadows: [
                                         Shadow(
-                                          offset: Offset(0, 1),
+                                          offset: const Offset(0, 1),
                                           blurRadius: 2,
-                                          color: Color.fromRGBO(0, 0, 0, 0.4),
+                                          color: AppColors.blackWithOpacity(0.4),
                                         ),
                                       ],
                                     ),

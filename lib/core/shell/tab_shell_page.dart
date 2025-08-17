@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../theme/app_colors.dart';
 import 'tab_shell_controller.dart';
 import '../../modules/home/home_page.dart';
 import '../../modules/teacher/teacher_page.dart';
@@ -27,9 +28,9 @@ class TabShellPage extends GetView<TabShellController> {
         type: BottomNavigationBarType.fixed,
         currentIndex: controller.currentIndex.value,
         onTap: controller.changeTab,
-        selectedItemColor: const Color(0xFFFF5777),
-        unselectedItemColor: const Color(0xFF333333),
-        backgroundColor: Colors.white,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textPrimary,
+        backgroundColor: AppColors.surface,
         elevation: 8,
         showSelectedLabels: true,
         showUnselectedLabels: true,

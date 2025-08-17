@@ -10,20 +10,18 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           '密码登录',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-            color: Colors.black,
+          style: AppTextStyles.h3.copyWith(
+            color: AppColors.textPrimary,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.surface,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Get.back(),
         ),
         centerTitle: true,
@@ -42,10 +40,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                     // 页面标题
                     Text(
                       '密码登录',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black,
+                      style: AppTextStyles.h1.copyWith(
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     
@@ -53,9 +49,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                     
                     Text(
                       '请输入您的手机号和密码',
-                      style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.grey.shade600,
+                      style: AppTextStyles.bodyMedium.copyWith(
+                        color: AppColors.textSecondary,
                       ),
                     ),
                     
@@ -66,7 +61,7 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Colors.grey.shade300,
+                            color: AppColors.border,
                             width: 1,
                           ),
                         ),
@@ -78,9 +73,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                         onChanged: (value) => controller.validatePhone(),
                         decoration: InputDecoration(
                           hintText: '请输入手机号码',
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade500,
-                            fontSize: 16,
+                          hintStyle: AppTextStyles.bodyLarge.copyWith(
+                            color: AppColors.textTertiary,
                           ),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(
@@ -89,9 +83,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                           ),
                           counterText: '',
                         ),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          color: AppColors.textPrimary,
                         ),
                       ),
                     ),
@@ -103,7 +96,7 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: BorderSide(
-                            color: Colors.grey.shade300,
+                            color: AppColors.border,
                             width: 1,
                           ),
                         ),
@@ -114,9 +107,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                         onChanged: (value) => controller.validatePassword(),
                         decoration: InputDecoration(
                           hintText: '请输入密码',
-                          hintStyle: TextStyle(
-                            color: Colors.grey.shade500,
-                            fontSize: 16,
+                          hintStyle: AppTextStyles.bodyLarge.copyWith(
+                            color: AppColors.textTertiary,
                           ),
                           border: InputBorder.none,
                           contentPadding: const EdgeInsets.symmetric(
@@ -131,18 +123,16 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                 child: Text(
                                   controller.showPassword.value ? '隐藏' : '显示',
-                                  style: TextStyle(
-                                    color: Colors.grey.shade600,
-                                    fontSize: 14,
+                                  style: AppTextStyles.bodyMedium.copyWith(
+                                    color: AppColors.textSecondary,
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.black,
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          color: AppColors.textPrimary,
                         ),
                       ),
                     )),
@@ -156,9 +146,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                         onTap: controller.forgotPassword,
                         child: Text(
                           '忘记密码？',
-                          style: TextStyle(
-                            color: const Color(0xFFFF6B9D),
-                            fontSize: 14,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.secondary,
                           ),
                         ),
                       ),
@@ -176,9 +165,9 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                             : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: controller.canLogin
-                              ? const Color(0xFFFF6B9D)
-                              : Colors.grey.shade300,
-                          foregroundColor: Colors.white,
+                              ? AppColors.secondary
+                              : AppColors.textDisabled,
+                          foregroundColor: AppColors.surface,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24),
@@ -190,14 +179,13 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                                 height: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
-                                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                  valueColor: AlwaysStoppedAnimation<Color>(AppColors.surface),
                                 ),
                               )
-                            : const Text(
+                            : Text(
                                 '登录',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                style: AppTextStyles.buttonMedium.copyWith(
+                                  color: AppColors.surface,
                                 ),
                               ),
                       ),
@@ -211,9 +199,8 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                         onTap: controller.backToSmsLogin,
                         child: Text(
                           '验证码登录',
-                          style: TextStyle(
-                            color: Colors.grey.shade600,
-                            fontSize: 14,
+                          style: AppTextStyles.bodyMedium.copyWith(
+                            color: AppColors.textSecondary,
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -244,22 +231,21 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
               Checkbox(
                 value: controller.agreedToTerms.value,
                 onChanged: (value) => controller.agreedToTerms.value = value ?? false,
-                activeColor: const Color(0xFFFF6B9D),
+                activeColor: AppColors.secondary,
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
               Expanded(
                 child: RichText(
                   text: TextSpan(
-                    style: TextStyle(
-                      color: Colors.grey.shade600,
-                      fontSize: 12,
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.textSecondary,
                     ),
                     children: [
                       const TextSpan(text: '我已阅读并同意'),
                       TextSpan(
                         text: '《用户协议》',
                         style: TextStyle(
-                          color: const Color(0xFFFF6B9D),
+                          color: AppColors.secondary,
                           decoration: TextDecoration.underline,
                         ),
                       ),
@@ -267,7 +253,7 @@ class PasswordLoginPage extends GetView<PasswordLoginController> {
                       TextSpan(
                         text: '《隐私政策》',
                         style: TextStyle(
-                          color: const Color(0xFFFF6B9D),
+                          color: AppColors.secondary,
                           decoration: TextDecoration.underline,
                         ),
                       ),

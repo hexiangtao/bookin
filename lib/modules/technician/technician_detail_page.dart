@@ -90,7 +90,7 @@ class TechnicianDetailPage extends GetView<TechnicianDetailController> {
   // 技师头部信息
   Widget _buildTechnicianHeader() {
     return Container(
-      color: Colors.white,
+      color: AppColors.surface,
       padding: const EdgeInsets.all(16),
       child: Obx(() {
         final technician = controller.technician.value!;
@@ -136,7 +136,7 @@ class TechnicianDetailPage extends GetView<TechnicianDetailController> {
                               ),
                               child: const Icon(
                                 Icons.check,
-                                color: Colors.white,
+                                color: AppColors.surface,
                                 size: 12,
                               ),
                             ),
@@ -659,8 +659,8 @@ class TechnicianDetailPage extends GetView<TechnicianDetailController> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
+          color: AppColors.surface,
+          boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
             blurRadius: 4,
