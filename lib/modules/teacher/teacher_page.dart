@@ -182,7 +182,7 @@ class TeacherPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
       decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: Color(0xFFF5F5F5), width: 1)),
+        border: Border(top: BorderSide(color: AppColors.surfaceVariant, width: 1)),
       ),
       child: Row(
         children: [
@@ -198,14 +198,14 @@ class TeacherPage extends StatelessWidget {
                   '筛选',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF333333),
+                    color: AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(width: 4),
                 const Icon(
                   Icons.keyboard_arrow_down,
                   size: 16,
-                  color: Color(0xFF333333),
+                  color: AppColors.textPrimary,
                 ),
               ],
             ),
@@ -229,8 +229,8 @@ class TeacherPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   color: controller.currentTab.value == index 
-                      ? const Color(0xFFFF5777) 
-                      : const Color(0xFF333333),
+                      ? AppColors.secondary 
+                      : AppColors.textPrimary,
                   fontWeight: controller.currentTab.value == index 
                       ? FontWeight.bold 
                       : FontWeight.normal,
@@ -243,7 +243,7 @@ class TeacherPage extends StatelessWidget {
                   width: 20,
                   height: 2,
                   decoration: BoxDecoration(
-                    color: const Color(0xFFFF5777),
+                    color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(1),
                   ),
                 ),
@@ -353,14 +353,14 @@ class TeacherPage extends StatelessWidget {
                 width: 60,
                 height: 60,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
+                  color: AppColors.surfaceVariant,
                   borderRadius: BorderRadius.circular(
                     technician.avatarShape == 0 ? 30 : 8,
                   ),
                 ),
                 child: const Icon(
                   Icons.person,
-                  color: Color(0xFF999999),
+                  color: AppColors.textTertiary,
                   size: 30,
                 ),
               );
@@ -377,7 +377,7 @@ class TeacherPage extends StatelessWidget {
               width: 16,
               height: 16,
               decoration: const BoxDecoration(
-                color: Color(0xFFFF5777),
+                color: AppColors.secondary,
                 shape: BoxShape.circle,
               ),
               child: const Center(
@@ -409,7 +409,7 @@ class TeacherPage extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF333333),
+                color: AppColors.textPrimary,
               ),
             ),
             
@@ -418,7 +418,7 @@ class TeacherPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFF5777),
+                  color: AppColors.secondary,
                   borderRadius: BorderRadius.circular(2),
                 ),
                 child: const Text(
@@ -437,14 +437,14 @@ class TeacherPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFFFF0F4),
+                  color: AppColors.secondary.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: const Color(0xFFFF5777), width: 0.5),
+                  border: Border.all(color: AppColors.secondary, width: 0.5),
                 ),
                 child: const Text(
                   '官方推荐',
                   style: TextStyle(
-                    color: Color(0xFFFF5777),
+                    color: AppColors.secondary,
                     fontSize: 10,
                   ),
                 ),
@@ -460,7 +460,7 @@ class TeacherPage extends StatelessWidget {
           '已服务：${technician.orderCount}单',
           style: const TextStyle(
             fontSize: 12,
-            color: Color(0xFF666666),
+            color: AppColors.textSecondary,
           ),
         ),
         
@@ -474,7 +474,7 @@ class TeacherPage extends StatelessWidget {
                 technician.shopName!,
                 style: const TextStyle(
                   fontSize: 12,
-                  color: Color(0xFF999999),
+                  color: AppColors.textTertiary,
                 ),
               ),
               const SizedBox(width: 12),
@@ -483,14 +483,14 @@ class TeacherPage extends StatelessWidget {
             Icon(
               Icons.chat_bubble_outline,
               size: 12,
-              color: const Color(0xFF999999),
+              color: AppColors.textTertiary,
             ),
             const SizedBox(width: 2),
             Text(
               '${technician.commentCount}',
               style: const TextStyle(
                 fontSize: 12,
-                color: Color(0xFF999999),
+                color: AppColors.textTertiary,
               ),
             ),
             
@@ -499,7 +499,7 @@ class TeacherPage extends StatelessWidget {
             Icon(
               Icons.favorite_border,
               size: 12,
-              color: const Color(0xFF999999),
+              color: AppColors.textTertiary,
             ),
             const SizedBox(width: 2),
             Text(

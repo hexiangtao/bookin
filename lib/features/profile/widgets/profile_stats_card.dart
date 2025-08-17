@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../controllers/profile_controller.dart';
+import '../../../core/theme/app_colors.dart';
 
 class ProfileStatsCard extends StatelessWidget {
   final ProfileController controller;
@@ -34,7 +35,7 @@ class ProfileStatsCard extends StatelessWidget {
             children: [
               const Icon(
                 Icons.receipt_long,
-                color: Color(0xFF6C63FF),
+                color: AppColors.secondary,
                 size: 20,
               ),
               const SizedBox(width: 8),
@@ -43,7 +44,7 @@ class ProfileStatsCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  color: Color(0xFF333333),
+                  color: AppColors.textPrimary,
                 ),
               ),
               const Spacer(),
@@ -55,14 +56,14 @@ class ProfileStatsCard extends StatelessWidget {
                       '查看全部',
                       style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF999999),
+                        color: AppColors.textTertiary,
                       ),
                     ),
                     const SizedBox(width: 4),
                     const Icon(
                       Icons.arrow_forward_ios,
                       size: 12,
-                      color: Color(0xFF999999),
+                      color: AppColors.textTertiary,
                     ),
                   ],
                 ),
@@ -79,25 +80,25 @@ class ProfileStatsCard extends StatelessWidget {
                 icon: Icons.payment,
                 label: '待付款',
                 count: 'pending_payment',
-                color: const Color(0xFFFF6B6B),
+                color: AppColors.error,
               ),
               _buildOrderStatItem(
                 icon: Icons.schedule,
                 label: '待服务',
                 count: 'pending_service',
-                color: const Color(0xFF4ECDC4),
+                color: AppColors.info,
               ),
               _buildOrderStatItem(
                 icon: Icons.rate_review,
                 label: '待评价',
                 count: 'pending_review',
-                color: const Color(0xFFFFE66D),
+                color: AppColors.warning,
               ),
               _buildOrderStatItem(
                 icon: Icons.history,
                 label: '已完成',
                 count: 'completed',
-                color: const Color(0xFF95E1D3),
+                color: AppColors.success,
               ),
             ],
           ),
@@ -140,7 +141,7 @@ class ProfileStatsCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: orderCount > 0 ? color : const Color(0xFF999999),
+                  color: orderCount > 0 ? color : AppColors.textTertiary,
                 ),
               );
             }),
@@ -151,7 +152,7 @@ class ProfileStatsCard extends StatelessWidget {
               label,
               style: const TextStyle(
                 fontSize: 12,
-                color: Color(0xFF666666),
+                color: AppColors.textSecondary,
               ),
             ),
           ],

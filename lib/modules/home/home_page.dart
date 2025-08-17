@@ -155,7 +155,7 @@ class HomePage extends GetView<HomeController> {
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF333333),
+              color: AppColors.textPrimary,
             ),
           ),
         ),
@@ -255,7 +255,7 @@ class HomePage extends GetView<HomeController> {
                     width: active ? 14 : 6,
                     height: 6,
                     decoration: BoxDecoration(
-                      color: active ? const Color(0xFFFF5777) : Colors.white.withOpacity(0.8),
+                      color: active ? AppColors.secondary : Colors.white.withOpacity(0.8),
                       borderRadius: BorderRadius.circular(3),
                     ),
                   );
@@ -302,7 +302,7 @@ class HomePage extends GetView<HomeController> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 16, color: const Color(0xFF666666)),
+          Icon(icon, size: 16, color: AppColors.textSecondary),
           const SizedBox(width: 4),
           Text(
             text,
@@ -311,7 +311,7 @@ class HomePage extends GetView<HomeController> {
             style: const TextStyle(
               fontSize: 13,
               fontWeight: FontWeight.w600,
-              color: Color(0xFF333333),
+              color: AppColors.textPrimary,
             ),
           ),
         ],
@@ -323,7 +323,7 @@ class HomePage extends GetView<HomeController> {
     return Container(
       width: 1,
       height: 16,
-      color: const Color(0xFFE5E5E5),
+      color: AppColors.border,
     );
   }
 
@@ -417,7 +417,7 @@ class HomePage extends GetView<HomeController> {
       padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
       child: Row(
         children: [
-          Icon(icon, size: 18, color: const Color(0xFF333333)),
+          Icon(icon, size: 18, color: AppColors.textPrimary),
           const SizedBox(width: 4),
           Expanded(
             child: Text(
@@ -427,7 +427,7 @@ class HomePage extends GetView<HomeController> {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF333333),
+                color: AppColors.textPrimary,
               ),
             ),
           ),
@@ -438,7 +438,7 @@ class HomePage extends GetView<HomeController> {
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                color: const Color(0xFFFF5777).withOpacity(0.05),
+                color: AppColors.secondary.withOpacity(0.05),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
@@ -447,14 +447,14 @@ class HomePage extends GetView<HomeController> {
                     '查看全部',
                     style: TextStyle(
                       fontSize: 12,
-                      color: Color(0xFFFF5777),
+                      color: AppColors.secondary,
                     ),
                   ),
                   SizedBox(width: 2),
                   Icon(
                     Icons.arrow_forward_ios,
                     size: 10,
-                    color: Color(0xFFFF5777),
+                    color: AppColors.secondary,
                   ),
                 ],
               ),
@@ -511,7 +511,7 @@ class HomePage extends GetView<HomeController> {
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Color(0xFFFF4757), Color(0xFFFF3742)],
+                        colors: [AppColors.secondary, AppColors.secondaryDark],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -556,7 +556,7 @@ class HomePage extends GetView<HomeController> {
               style: const TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF333333),
+                color: AppColors.textPrimary,
               ),
             ),
           ),
@@ -570,7 +570,7 @@ class HomePage extends GetView<HomeController> {
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 9,
-                color: Color(0xFF999999),
+                color: AppColors.textTertiary,
               ),
             ),
           ),
@@ -711,7 +711,7 @@ class HomePage extends GetView<HomeController> {
                         width: 6,
                         height: 6,
                         decoration: const BoxDecoration(
-                          color: Color(0xFFFF5777),
+                          color: AppColors.secondary,
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -720,7 +720,7 @@ class HomePage extends GetView<HomeController> {
                         '${project.duration}分钟',
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF666666),
+                          color: AppColors.textSecondary,
                         ),
                       ),
                       const Spacer(),
@@ -728,7 +728,7 @@ class HomePage extends GetView<HomeController> {
                         '已出售${project.orderCount ?? 0}+',
                         style: const TextStyle(
                           fontSize: 12,
-                          color: Color(0xFF999999),
+                          color: AppColors.textTertiary,
                         ),
                       ),
                     ],
@@ -744,7 +744,7 @@ class HomePage extends GetView<HomeController> {
                             '¥',
                             style: TextStyle(
                               fontSize: 12,
-                              color: Color(0xFFFF5777),
+                              color: AppColors.secondary,
                             ),
                           ),
                           Text(
@@ -752,7 +752,7 @@ class HomePage extends GetView<HomeController> {
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFFFF5777),
+                              color: AppColors.secondary,
                             ),
                           ),
                         ],
@@ -763,7 +763,7 @@ class HomePage extends GetView<HomeController> {
                           '¥${project.originalPriceYuan}',
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Color(0xFF999999),
+                            color: AppColors.textTertiary,
                             decoration: TextDecoration.lineThrough,
                           ),
                         ),
@@ -771,11 +771,11 @@ class HomePage extends GetView<HomeController> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFF5777),
+                          color: AppColors.secondary,
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFFFF5777).withOpacity(0.3),
+                              color: AppColors.secondary.withOpacity(0.3),
                               offset: const Offset(0, 2),
                               blurRadius: 6,
                             ),

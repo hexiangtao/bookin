@@ -376,15 +376,15 @@ class UserEditPage extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 color: controller.bio.value.isEmpty 
-                    ? Colors.grey[500]
-                    : Colors.black87,
+                    ? AppColors.textTertiary
+                    : AppColors.textPrimary,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             )),
-            trailing: const Icon(
+            trailing: Icon(
               Icons.chevron_right,
-              color: Colors.grey,
+              color: AppColors.textTertiary,
             ),
             onTap: () => _showEditBioDialog(controller),
           ),

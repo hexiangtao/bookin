@@ -319,7 +319,7 @@ class TechnicianListPage extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFFF6B35),
+                      color: AppColors.secondary,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Text(

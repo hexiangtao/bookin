@@ -28,7 +28,7 @@ class TabShellPage extends GetView<TabShellController> {
         type: BottomNavigationBarType.fixed,
         currentIndex: controller.currentIndex.value,
         onTap: controller.changeTab,
-        selectedItemColor: AppColors.primary,
+        selectedItemColor: AppColors.secondary,
         unselectedItemColor: AppColors.textPrimary,
         backgroundColor: AppColors.surface,
         elevation: 8,

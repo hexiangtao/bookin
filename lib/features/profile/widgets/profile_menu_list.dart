@@ -210,12 +210,9 @@ class ProfileMenuList extends StatelessWidget {
             Expanded(
               child: Text(
                 label,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.normal,
-                  color: AppColors.textPrimary,
-                  height: 1.4,
-                ),
+                style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textPrimary,
+            ),
               ),
             ),
             if (showArrow)
@@ -251,12 +248,10 @@ class ProfileMenuList extends StatelessWidget {
             color: AppColors.error.withOpacity(0.3),
           ),
         ),
-        child: const Text(
+        child: Text(
           '退出登录',
           textAlign: TextAlign.center,
-          style: TextStyle(
-             fontSize: 14,
-             fontWeight: FontWeight.w600,
+          style: AppTextStyles.buttonMedium.copyWith(
              color: AppColors.error,
            ),
         ),

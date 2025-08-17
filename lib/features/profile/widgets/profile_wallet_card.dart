@@ -19,18 +19,18 @@ class ProfileWalletCard extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(16, 11, 16, 11),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            Color(0xFFFF6B6B),
-            Color(0xFFFF8E8E),
+            AppColors.primary,
+            AppColors.primary.withOpacity(0.8),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFFFF6B6B).withOpacity(0.3),
+            color: AppColors.primary.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
