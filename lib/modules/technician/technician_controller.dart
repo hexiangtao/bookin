@@ -60,9 +60,12 @@ class TechnicianController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _initUserCity();
-    loadFilterOptions();
-    loadTechnicians();
+    // 延迟初始化，等待StorageService完全初始化
+    Future.delayed(Duration.zero, () {
+      _initUserCity();
+      loadFilterOptions();
+      loadTechnicians();
+    });
   }
 
   /// 初始化用户城市信息

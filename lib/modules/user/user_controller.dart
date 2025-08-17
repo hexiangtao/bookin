@@ -18,11 +18,14 @@ class UserController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadUserFromStorage();
+    // 延迟初始化，等待StorageService完全初始化
+    Future.delayed(Duration.zero, () {
+      _loadUserFromStorage();
+    });
   }
 
   Future<void> _loadUserFromStorage() async {
-    final userData = StorageService().getUserInfo();
+    final userData = storage.getUserInfo();
     final isUserLoggedIn = await AuthService.instance.isLoggedIn();
     
     print('🔍 Loading user from storage - userData: ${userData != null}, isLoggedIn: $isUserLoggedIn');
