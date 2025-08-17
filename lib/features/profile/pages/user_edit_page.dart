@@ -32,7 +32,7 @@ class UserEditPage extends StatelessWidget {
                   : null,
               style: ElevatedButton.styleFrom(
                 backgroundColor: controller.hasChanges.value
-                    ? AppColors.primary
+                    ? AppColors.secondary
                     : AppColors.surfaceVariant,
                 foregroundColor: controller.hasChanges.value
                     ? AppColors.surface
@@ -139,11 +139,11 @@ class UserEditPage extends StatelessWidget {
                     // 显示默认头像
                     avatarWidget = CircleAvatar(
                       radius: 60,
-                      backgroundColor: AppColors.primary.withOpacity(0.08),
+                      backgroundColor: AppColors.secondary.withOpacity(0.08),
                       child: Icon(
                         Icons.person_outline,
                         size: 60,
-                        color: AppColors.primary.withOpacity(0.6),
+                        color: AppColors.secondary.withOpacity(0.6),
                       ),
                     );
                   }
@@ -152,12 +152,12 @@ class UserEditPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: AppColors.primary.withOpacity(0.1),
+                        color: AppColors.secondary.withOpacity(0.1),
                         width: 3,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.1),
+                          color: AppColors.secondary.withOpacity(0.1),
                           blurRadius: 20,
                           offset: const Offset(0, 8),
                         ),
@@ -174,7 +174,7 @@ class UserEditPage extends StatelessWidget {
                     height: 36,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [AppColors.primary, AppColors.primary.withOpacity(0.8)],
+                        colors: [AppColors.secondary, AppColors.secondary.withOpacity(0.8)],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -185,7 +185,7 @@ class UserEditPage extends StatelessWidget {
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.secondary.withOpacity(0.3),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -247,7 +247,7 @@ class UserEditPage extends StatelessWidget {
                   width: 4,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -630,8 +630,8 @@ class UserEditPage extends StatelessWidget {
             child: Switch(
               value: value,
               onChanged: onChanged,
-              activeColor: AppColors.primary,
-              activeTrackColor: AppColors.primary.withOpacity(0.3),
+              activeColor: AppColors.secondary,
+                activeTrackColor: AppColors.secondary.withOpacity(0.3),
               inactiveThumbColor: AppColors.textTertiary,
               inactiveTrackColor: AppColors.surfaceVariant,
             ),
@@ -712,11 +712,11 @@ class UserEditPage extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding * 1.25, vertical: AppConfig.defaultPadding * 1.125),
           decoration: BoxDecoration(
             color: controller.selectedGender.value == gender
-                ? AppColors.primary.withOpacity(0.08)
+                ? AppColors.secondary.withOpacity(0.08)
                 : Colors.transparent,
             borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
             border: controller.selectedGender.value == gender ? Border.all(
-              color: AppColors.primary.withOpacity(0.3),
+              color: AppColors.secondary.withOpacity(0.3),
               width: 1.5,
             ) : null,
           ),
@@ -727,7 +727,7 @@ class UserEditPage extends StatelessWidget {
                   text,
                   style: AppTextStyles.bodyLarge.copyWith(
                     color: controller.selectedGender.value == gender
-                        ? AppColors.primary
+                        ? AppColors.secondary
                         : AppColors.textPrimary,
                     fontWeight: controller.selectedGender.value == gender
                         ? FontWeight.w600
@@ -739,7 +739,7 @@ class UserEditPage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: AppColors.secondary,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -797,7 +797,7 @@ class UserEditPage extends StatelessWidget {
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
-                    borderSide: BorderSide(color: AppColors.primary, width: 2),
+                    borderSide: BorderSide(color: AppColors.secondary, width: 2),
                   ),
                   contentPadding: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding, vertical: AppConfig.defaultPadding * 0.875),
                 ),
@@ -834,7 +834,7 @@ class UserEditPage extends StatelessWidget {
                       Get.back();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                      backgroundColor: AppColors.secondary,
                       foregroundColor: AppColors.surface,
                       elevation: 0,
                       padding: EdgeInsets.symmetric(
@@ -903,9 +903,9 @@ class UserEditPage extends StatelessWidget {
                     borderSide: BorderSide(color: AppColors.border),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
-                    borderSide: BorderSide(color: AppColors.primary, width: 2),
-                  ),
+                      borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius),
+                      borderSide: BorderSide(color: AppColors.secondary, width: 2),
+                    ),
                   contentPadding: EdgeInsets.all(AppConfig.defaultPadding),
                 ),
                 style: AppTextStyles.bodyLarge.copyWith(
@@ -941,7 +941,7 @@ class UserEditPage extends StatelessWidget {
                       Get.back();
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.primary,
+                        backgroundColor: AppColors.secondary,
                       foregroundColor: AppColors.surface,
                       elevation: 0,
                       padding: EdgeInsets.symmetric(

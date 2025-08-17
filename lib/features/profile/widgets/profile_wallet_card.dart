@@ -23,14 +23,14 @@ class ProfileWalletCard extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            AppColors.primary,
-            AppColors.primary.withOpacity(0.8),
+            AppColors.secondary,
+            AppColors.secondary.withOpacity(0.8),
           ],
         ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.secondary.withOpacity(0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
