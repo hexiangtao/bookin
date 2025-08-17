@@ -7,6 +7,7 @@ import '../widgets/profile_header.dart';
 import '../widgets/profile_menu_grid.dart';
 import '../widgets/profile_menu_list.dart';
 import '../widgets/profile_wallet_card.dart';
+import '../widgets/profile_membership_card.dart';
 import '../widgets/profile_stats_card.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -39,6 +40,14 @@ class ProfilePage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: ProfileWalletCard(controller: controller),
+                ),
+              ),
+              
+              // 会员特权卡片 - 添加上下边距
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ProfileMembershipCard(controller: controller),
                 ),
               ),
           

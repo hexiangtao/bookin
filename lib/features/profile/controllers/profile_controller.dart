@@ -239,6 +239,9 @@ class ProfileController extends GetxController {
       case 'edit_profile':
         Get.toNamed('/user/edit');
         break;
+      case 'membership':
+        Get.toNamed('/membership');
+        break;
       case 'settings':
         Get.toNamed('/settings');
         break;
