@@ -61,7 +61,7 @@ class CouponDialog extends StatelessWidget {
                 children: [
                   // 头部
                   Container(
-                    padding: const EdgeInsets.all(24),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [AppColors.secondary, AppColors.secondaryLight],
@@ -130,7 +130,7 @@ class CouponDialog extends StatelessWidget {
                   // 优惠券列表
                   Flexible(
                     child: Container(
-                      padding: const EdgeInsets.all(24),
+                      padding: const EdgeInsets.all(20),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -143,7 +143,7 @@ class CouponDialog extends StatelessWidget {
                               },
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 12),
                           // 底部按钮
                           Row(
                             children: [
@@ -174,7 +174,7 @@ class CouponDialog extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 16),
+                              const SizedBox(width: 12),
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -250,7 +250,7 @@ class CouponDialog extends StatelessWidget {
 
   Widget _buildCouponCard(CouponModel coupon) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -267,13 +267,13 @@ class CouponDialog extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Row(
           children: [
             // 优惠券金额
             Container(
-              width: 70,
-              height: 70,
+              width: 65,
+              height: 65,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [AppColors.secondary, AppColors.secondaryLight],
@@ -309,7 +309,7 @@ class CouponDialog extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 16),
+            const SizedBox(width: 12),
             // 优惠券信息
             Expanded(
               child: Column(
@@ -321,18 +321,25 @@ class CouponDialog extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 3),
                   Text(
                     coupon.description,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 6),
-                  Text(
-                    '有效期至 ${coupon.endTime.toString().split(' ')[0]}',
-                    style: AppTextStyles.label.copyWith(
-                      color: AppColors.textTertiary,
+                  const SizedBox(height: 3),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                    decoration: BoxDecoration(
+                      color: AppColors.secondary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      '有效期至 ${coupon.endTime.toString().split(' ')[0]}',
+                      style: AppTextStyles.label.copyWith(
+                        color: AppColors.secondary,
+                      ),
                     ),
                   ),
                 ],

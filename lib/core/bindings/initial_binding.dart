@@ -18,8 +18,8 @@ class InitialBinding extends Bindings {
     Get.put<ApiService>(ApiService(), permanent: true);
     
     Get.put<TabShellController>(TabShellController(), permanent: true);
-    Get.lazyPut<HomeController>(() => HomeController());
-    Get.lazyPut<UserController>(() => UserController());
-    Get.lazyPut<TechnicianController>(() => TechnicianController());
+    Get.put<HomeController>(HomeController(), permanent: true);
+    Get.put<UserController>(UserController(), permanent: true);
+    Get.put<TechnicianController>(TechnicianController(), permanent: true);
   }
 }

@@ -8,7 +8,12 @@ class UserController extends GetxController {
   final RxBool isLoggedIn = false.obs;
   final RxBool loading = false.obs;
 
-  final StorageService _storage = Get.find<StorageService>();
+  StorageService? _storage;
+  
+  StorageService get storage {
+    _storage ??= Get.find<StorageService>();
+    return _storage!;
+  }
 
   @override
   void onInit() {

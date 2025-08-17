@@ -5,7 +5,12 @@ import '../../core/services/storage_service.dart';
 
 class TechnicianController extends GetxController {
   final TechnicianService _service = TechnicianService();
-  final StorageService _storage = Get.find<StorageService>();
+  StorageService? _storage;
+  
+  StorageService get storage {
+    _storage ??= Get.find<StorageService>();
+    return _storage!;
+  }
 
   // 技师列表数据
   final RxList<TechnicianModel> technicians = <TechnicianModel>[].obs;
@@ -63,8 +68,8 @@ class TechnicianController extends GetxController {
   /// 初始化用户城市信息
   void _initUserCity() {
     // 从设置中获取城市信息
-    final cityName = _storage.getSetting<String>('cityName');
-    final cityCode = _storage.getSetting<String>('cityCode');
+    final cityName = storage.getSetting<String>('cityName');
+    final cityCode = storage.getSetting<String>('cityCode');
     if (cityName != null) {
       selectedCity.value = cityName;
       selectedCityCode.value = cityCode ?? '';
@@ -284,15 +289,15 @@ class TechnicianController extends GetxController {
 
   /// 更新用户城市信息
   void _updateUserCityInfo(String cityName, String cityCode) {
-    final userInfo = _storage.getUserInfo();
+    final userInfo = storage.getUserInfo();
     if (userInfo != null) {
       // 如果用户信息存在，更新城市信息
       // 注意：这里需要根据 UserModel 的实际结构来更新
       // 暂时跳过更新，因为 UserModel 可能没有 cityName 和 cityCode 字段
     }
     // 可以考虑使用其他方式保存城市信息，比如单独的设置项
-    _storage.saveSetting('cityName', cityName);
-    _storage.saveSetting('cityCode', cityCode);
+    storage.saveSetting('cityName', cityName);
+    storage.saveSetting('cityCode', cityCode);
   }
 
   /// 刷新数据
