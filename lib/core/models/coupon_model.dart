@@ -93,18 +93,18 @@ class CouponModel {
   String get displayValue {
     switch (type) {
       case 'cash':
-        return '¥${value.toInt()}';
+        return '¥${(value / 100).toStringAsFixed(0)}';
       case 'percentage':
         return '${(value * 10).toInt()}折';
       case 'discount':
       default:
-        return '¥${value.toInt()}';
+        return '¥${(value / 100).toStringAsFixed(0)}';
     }
   }
 
   String get displayCondition {
     if (minAmount != null && minAmount! > 0) {
-      return '满¥${minAmount!.toInt()}可用';
+      return '满¥${(minAmount! / 100).toStringAsFixed(0)}可用';
     }
     return '无门槛';
   }
