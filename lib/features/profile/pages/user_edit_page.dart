@@ -553,13 +553,18 @@ class UserEditPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
+        color: AppColors.surface.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.secondary.withOpacity(0.05),
+          width: 0.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+            color: AppColors.secondary.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
           ),
         ],
       ),
