@@ -90,56 +90,251 @@ class UserEditPage extends StatelessWidget {
     );
   }
   
-  /// 构建头像与基本信息区域 - 真正的嵌入式布局
+  /// 构建头像与基本信息区域 - 现代化内嵌式设计
   Widget _buildAvatarWithInfoSection(UserEditController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
-      child: Stack(
-        clipBehavior: Clip.none,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            AppColors.surface,
+            AppColors.surface.withOpacity(0.95),
+            AppColors.surface.withOpacity(0.98),
+          ],
+          stops: const [0.0, 0.6, 1.0],
+        ),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: AppColors.secondary.withOpacity(0.1),
+          width: 1.5,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.secondary.withOpacity(0.15),
+            blurRadius: 32,
+            offset: const Offset(0, 12),
+            spreadRadius: -4,
+          ),
+          BoxShadow(
+            color: AppColors.secondary.withOpacity(0.08),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+            spreadRadius: 0,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // 基本信息卡片
+          // 头像区域 - 内嵌在卡片顶部
           Container(
-            margin: const EdgeInsets.only(top: 40), // 为头像留出空间
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadow,
-                  blurRadius: 20,
-                  offset: const Offset(0, 4),
-                ),
-              ],
+            width: double.infinity,
+            padding: EdgeInsets.fromLTRB(
+              AppConfig.defaultPadding * 1.5, 
+              AppConfig.defaultPadding * 2, 
+              AppConfig.defaultPadding * 1.5, 
+              AppConfig.defaultPadding
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.secondary.withOpacity(0.03),
+                  Colors.transparent,
+                ],
+              ),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(28),
+                topRight: Radius.circular(28),
+              ),
+            ),
+            child: Row(
               children: [
-                // 顶部留空给头像
-                const SizedBox(height: 40),
-                
-                // 标题栏
-                Padding(
-                  padding: EdgeInsets.fromLTRB(AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding),
-                  child: Row(
+                // 头像
+                GestureDetector(
+                  onTap: controller.selectAvatar,
+                  child: Stack(
                     children: [
-                      Container(
-                        width: 4,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: AppColors.secondary,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Text(
-                        '基本信息',
-                        style: AppTextStyles.h3.copyWith(
-                          color: AppColors.textPrimary,
+                      // 头像主体
+                      Obx(() {
+                        Widget avatarWidget;
+                        
+                        if (controller.selectedAvatar.value != null) {
+                          avatarWidget = CircleAvatar(
+                            radius: 45,
+                            backgroundImage: FileImage(controller.selectedAvatar.value!),
+                          );
+                        } else if (controller.avatarUrl.value.isNotEmpty) {
+                          avatarWidget = CircleAvatar(
+                            radius: 45,
+                            backgroundImage: CachedNetworkImageProvider(
+                              controller.avatarUrl.value,
+                            ),
+                          );
+                        } else {
+                          avatarWidget = CircleAvatar(
+                            radius: 45,
+                            backgroundColor: AppColors.secondary.withOpacity(0.1),
+                            child: Icon(
+                              Icons.person_outline_rounded,
+                              size: 36,
+                              color: AppColors.secondary.withOpacity(0.7),
+                            ),
+                          );
+                        }
+                        
+                        return Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.surface,
+                              width: 4,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.secondary.withOpacity(0.2),
+                                blurRadius: 20,
+                                offset: const Offset(0, 8),
+                                spreadRadius: -2,
+                              ),
+                              BoxShadow(
+                                color: AppColors.secondary.withOpacity(0.1),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          child: avatarWidget,
+                        );
+                      }),
+                      // 编辑按钮
+                      Positioned(
+                        right: 2,
+                        bottom: 2,
+                        child: Container(
+                          width: 28,
+                          height: 28,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              colors: [
+                                AppColors.secondary,
+                                AppColors.secondary.withOpacity(0.8),
+                              ],
+                            ),
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: AppColors.surface,
+                              width: 2.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.secondary.withOpacity(0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 3),
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          child: Icon(
+                            Icons.edit_rounded,
+                            color: AppColors.surface,
+                            size: 14,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
+                const SizedBox(width: 20),
+                // 用户基本信息预览
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Obx(() => Text(
+                        controller.nickname.value.isEmpty 
+                            ? '设置昵称' 
+                            : controller.nickname.value,
+                        style: AppTextStyles.h2.copyWith(
+                          color: controller.nickname.value.isEmpty 
+                              ? AppColors.textTertiary 
+                              : AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      )),
+                      const SizedBox(height: 4),
+                      Obx(() => Text(
+                        controller.bio.value.isEmpty 
+                            ? '添加个人简介，让大家更了解你' 
+                            : controller.bio.value,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          color: controller.bio.value.isEmpty 
+                              ? AppColors.textTertiary 
+                              : AppColors.textSecondary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      )),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          
+          // 分隔线
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultPadding * 1.5),
+            height: 1,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.transparent,
+                  AppColors.secondary.withOpacity(0.1),
+                  Colors.transparent,
+                ],
+              ),
+            ),
+          ),
+          
+          // 详细信息区域
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              AppConfig.defaultPadding * 1.5, 
+              AppConfig.defaultPadding, 
+              AppConfig.defaultPadding * 1.5, 
+              AppConfig.defaultPadding
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 标题栏
+                Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      '详细信息',
+                      style: AppTextStyles.h3.copyWith(
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: AppConfig.defaultPadding),
                 
                 // 昵称
                 Obx(() => _buildFormItem(
@@ -281,109 +476,9 @@ class UserEditPage extends StatelessWidget {
                 const SizedBox(height: AppConfig.defaultPadding),
               ],
             ),
-          ),
-          
-          // 头像 - 定位在卡片顶部中央
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Center(
-              child: GestureDetector(
-                onTap: controller.selectAvatar,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    // 头像主体
-                    Obx(() {
-                      Widget avatarWidget;
-                      
-                      if (controller.selectedAvatar.value != null) {
-                        // 显示选中的本地图片
-                        avatarWidget = CircleAvatar(
-                          radius: 40,
-                          backgroundImage: FileImage(controller.selectedAvatar.value!),
-                        );
-                      } else if (controller.avatarUrl.value.isNotEmpty) {
-                        // 显示网络头像
-                        avatarWidget = CircleAvatar(
-                          radius: 40,
-                          backgroundImage: CachedNetworkImageProvider(
-                            controller.avatarUrl.value,
-                          ),
-                        );
-                      } else {
-                        // 显示默认头像
-                        avatarWidget = CircleAvatar(
-                          radius: 40,
-                          backgroundColor: AppColors.surface,
-                          child: Icon(
-                            Icons.person_outline,
-                            size: 32,
-                            color: AppColors.secondary.withOpacity(0.6),
-                          ),
-                        );
-                      }
-                      
-                      return Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.surface,
-                            width: 4,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.secondary.withOpacity(0.15),
-                              blurRadius: 20,
-                              offset: const Offset(0, 6),
-                            ),
-                            BoxShadow(
-                              color: AppColors.secondary.withOpacity(0.08),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: avatarWidget,
-                      );
-                    }),
-                    // 编辑按钮
-                    Positioned(
-                      right: 2,
-                      bottom: 2,
-                      child: Container(
-                        width: 28,
-                        height: 28,
-                        decoration: BoxDecoration(
-                          color: AppColors.secondary,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: AppColors.surface,
-                            width: 2,
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.secondary.withOpacity(0.3),
-                              blurRadius: 6,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        child: Icon(
-                          Icons.edit_rounded,
-                          color: AppColors.surface,
-                          size: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
+           ),
+         ],
+       ),
     );
   }
   
