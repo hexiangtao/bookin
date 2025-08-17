@@ -64,7 +64,7 @@ class CouponDialog extends StatelessWidget {
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [AppColors.primary, AppColors.primaryLight],
+                        colors: [AppColors.secondary, AppColors.secondaryLight],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -143,7 +143,7 @@ class CouponDialog extends StatelessWidget {
                               },
                             ),
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 16),
                           // 底部按钮
                           Row(
                             children: [
@@ -181,14 +181,14 @@ class CouponDialog extends StatelessWidget {
                                   height: 48,
                                   decoration: BoxDecoration(
                                     gradient: LinearGradient(
-                                      colors: [AppColors.primary, AppColors.primaryLight],
+                                      colors: [AppColors.secondary, AppColors.secondaryLight],
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
                                     ),
                                     borderRadius: BorderRadius.circular(24),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: AppColors.primary.withOpacity(0.3),
+                                        color: AppColors.secondary.withOpacity(0.3),
                                         offset: const Offset(0, 4),
                                         blurRadius: 12,
                                       ),
@@ -250,7 +250,7 @@ class CouponDialog extends StatelessWidget {
 
   Widget _buildCouponCard(CouponModel coupon) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 16),
+      margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -267,23 +267,23 @@ class CouponDialog extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(16),
         child: Row(
           children: [
             // 优惠券金额
             Container(
-              width: 80,
-              height: 80,
+              width: 70,
+              height: 70,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [AppColors.primary, AppColors.primaryLight],
+                  colors: [AppColors.secondary, AppColors.secondaryLight],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: [
                   BoxShadow(
-                    color: AppColors.primary.withOpacity(0.2),
+                    color: AppColors.secondary.withOpacity(0.2),
                     offset: const Offset(0, 2),
                     blurRadius: 8,
                   ),
@@ -309,7 +309,7 @@ class CouponDialog extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 16),
             // 优惠券信息
             Expanded(
               child: Column(
@@ -321,25 +321,18 @@ class CouponDialog extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 6),
+                  const SizedBox(height: 4),
                   Text(
                     coupon.description,
                     style: AppTextStyles.bodySmall.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryLight.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    child: Text(
-                      '有效期至 ${coupon.endTime.toString().split(' ')[0]}',
-                      style: AppTextStyles.label.copyWith(
-                        color: AppColors.primary,
-                      ),
+                  const SizedBox(height: 6),
+                  Text(
+                    '有效期至 ${coupon.endTime.toString().split(' ')[0]}',
+                    style: AppTextStyles.label.copyWith(
+                      color: AppColors.textTertiary,
                     ),
                   ),
                 ],
@@ -347,12 +340,12 @@ class CouponDialog extends StatelessWidget {
             ),
             // 领取按钮
             Container(
-              width: 80,
-              height: 36,
+              width: 72,
+              height: 32,
               decoration: BoxDecoration(
                 gradient: coupon.canReceive
                     ? LinearGradient(
-                        colors: [AppColors.primary, AppColors.primaryLight],
+                        colors: [AppColors.secondary, AppColors.secondaryLight],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
                       )
@@ -362,7 +355,7 @@ class CouponDialog extends StatelessWidget {
                 boxShadow: coupon.canReceive
                     ? [
                         BoxShadow(
-                          color: AppColors.primary.withOpacity(0.3),
+                          color: AppColors.secondary.withOpacity(0.3),
                           offset: const Offset(0, 2),
                           blurRadius: 8,
                         ),
