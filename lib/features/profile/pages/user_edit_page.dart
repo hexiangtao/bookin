@@ -72,6 +72,7 @@ class UserEditPage extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
+              const SizedBox(height: 16),
               // 头像与基本信息区域 - 真正的嵌入式布局
               _buildAvatarWithInfoSection(controller),
               const SizedBox(height: 16),
@@ -95,32 +96,17 @@ class UserEditPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            AppColors.surface,
-            AppColors.surface.withOpacity(0.95),
-            AppColors.surface.withOpacity(0.98),
-          ],
-          stops: const [0.0, 0.6, 1.0],
-        ),
-        borderRadius: BorderRadius.circular(28),
+        color: AppColors.surface.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: AppColors.secondary.withOpacity(0.1),
-          width: 1.5,
+          color: AppColors.secondary.withOpacity(0.05),
+          width: 0.5,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.secondary.withOpacity(0.15),
-            blurRadius: 32,
-            offset: const Offset(0, 12),
-            spreadRadius: -4,
-          ),
-          BoxShadow(
-            color: AppColors.secondary.withOpacity(0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
+            color: AppColors.secondary.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
             spreadRadius: 0,
           ),
         ],
@@ -142,13 +128,14 @@ class UserEditPage extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  AppColors.secondary.withOpacity(0.03),
+                  AppColors.secondary.withOpacity(0.02),
                   Colors.transparent,
                 ],
+                stops: const [0.0, 0.8],
               ),
               borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(28),
-                topRight: Radius.circular(28),
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
               ),
             ),
             child: Row(
@@ -191,18 +178,18 @@ class UserEditPage extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: AppColors.surface,
-                              width: 4,
+                              width: 3,
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.secondary.withOpacity(0.2),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
+                                color: AppColors.secondary.withOpacity(0.15),
+                                blurRadius: 16,
+                                offset: const Offset(0, 6),
                                 spreadRadius: -2,
                               ),
                               BoxShadow(
-                                color: AppColors.secondary.withOpacity(0.1),
-                                blurRadius: 6,
+                                color: AppColors.secondary.withOpacity(0.08),
+                                blurRadius: 4,
                                 offset: const Offset(0, 2),
                                 spreadRadius: 0,
                               ),
@@ -489,13 +476,18 @@ class UserEditPage extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
+        color: AppColors.surface.withOpacity(0.6),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: AppColors.secondary.withOpacity(0.05),
+          width: 0.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+            color: AppColors.secondary.withOpacity(0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+            spreadRadius: 0,
           ),
         ],
       ),
