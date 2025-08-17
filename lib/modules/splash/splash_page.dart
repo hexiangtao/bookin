@@ -27,180 +27,56 @@ class SplashPage extends GetView<SplashController> {
         ),
         child: Stack(
           children: [
-            // 背景装饰圆圈
-            Positioned(
-              top: -100,
-              right: -100,
-              child: Container(
-                width: 300,
-                height: 300,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      Colors.white.withOpacity(0.1),
-                      Colors.white.withOpacity(0.05),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: -150,
-              left: -150,
-              child: Container(
-                width: 400,
-                height: 400,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppColors.secondary.withOpacity(0.15),
-                      AppColors.secondary.withOpacity(0.08),
-                      Colors.transparent,
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            // 几何装饰元素
-            Positioned(
-              top: 120,
-              left: 30,
-              child: Transform.rotate(
-                angle: 0.3,
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.2),
-                      width: 1.5,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 200,
-              right: 40,
-              child: Transform.rotate(
-                angle: -0.5,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white.withOpacity(0.3),
-                      width: 2,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // 主要内容
+            // 移除所有装饰元素，保持苹果风格的极简设计
+            // 主要内容 - 苹果风格简约设计
             SafeArea(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // 应用图标容器
+                    // 简约应用图标
                     Container(
-                      width: 140,
-                      height: 140,
+                      width: 100,
+                      height: 100,
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors: [
-                            Colors.white.withOpacity(0.25),
-                            Colors.white.withOpacity(0.15),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(32),
+                        color: Colors.white.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(22),
                         border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                          width: 1.5,
+                          color: Colors.white.withOpacity(0.2),
+                          width: 0.5,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 24,
-                            offset: const Offset(0, 8),
-                            spreadRadius: 0,
-                          ),
-                          BoxShadow(
-                            color: Colors.white.withOpacity(0.1),
-                            blurRadius: 16,
-                            offset: const Offset(0, -4),
-                            spreadRadius: -2,
-                          ),
-                        ],
                       ),
                       child: Icon(
                         Icons.spa_outlined,
-                        size: 72,
+                        size: 48,
                         color: Colors.white,
                       ),
                     ),
                     
-                    const SizedBox(height: 48),
+                    const SizedBox(height: 32),
                     
-                    // 应用名称
+                    // 应用名称 - 简化样式
                     Text(
                       AppConfig.appName,
                       style: AppTextStyles.h1.copyWith(
                         color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 32,
-                        letterSpacing: -0.5,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black.withOpacity(0.3),
-                            offset: const Offset(0, 2),
-                            blurRadius: 4,
-                          ),
-                        ],
+                        fontWeight: FontWeight.w300,
+                        fontSize: 28,
+                        letterSpacing: 1.0,
                       ),
                     ),
                     
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 120),
                     
-                    // 应用描述
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border.all(
-                          color: Colors.white.withOpacity(0.3),
-                          width: 1,
-                        ),
-                      ),
-                      child: Text(
-                        '专业上门美甲服务',
-                        style: AppTextStyles.bodyLarge.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 80),
-                    
-                    // 加载指示器
+                    // 极简加载指示器
                     Obx(() => controller.loading.value
-                        ? Container(
-                            width: 32,
-                            height: 32,
+                        ? SizedBox(
+                            width: 24,
+                            height: 24,
                             child: CircularProgressIndicator(
-                              strokeWidth: 3,
-                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                              backgroundColor: Colors.white.withOpacity(0.3),
+                              strokeWidth: 2,
+                              valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.8)),
+                              backgroundColor: Colors.transparent,
                             ),
                           )
                         : const SizedBox.shrink()),
