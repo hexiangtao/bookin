@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
@@ -54,6 +54,15 @@ class BookinApp extends StatelessWidget {
       initialBinding: InitialBinding(),
       locale: const Locale('zh', 'CN'),
       fallbackLocale: const Locale('zh', 'CN'),
+      supportedLocales: const [
+        Locale('zh', 'CN'),
+        Locale('en', 'US'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       defaultTransition: Transition.cupertino,
       transitionDuration: const Duration(milliseconds: 300),
     );
