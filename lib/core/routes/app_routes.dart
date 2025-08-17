@@ -22,6 +22,7 @@ class AppRoutes {
   
   // 用户模块
   static const String userProfile = '/user/profile';
+  static const String userEdit = '/user/edit';
   static const String userWallet = '/user/wallet';
   static const String userMembership = '/user/membership';
   static const String userInvite = '/user/invite';

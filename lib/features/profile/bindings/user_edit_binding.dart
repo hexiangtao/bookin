@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import '../controllers/profile_controller.dart';
+import '../controllers/user_edit_controller.dart';
 import '../services/avatar_upload_service.dart';
 import '../../../core/services/user_service.dart';
 
-class ProfileBinding extends Bindings {
+class UserEditBinding extends Bindings {
   @override
   void dependencies() {
     // 注入用户服务
@@ -12,9 +12,9 @@ class ProfileBinding extends Bindings {
     // 注入头像上传服务
     Get.lazyPut<AvatarUploadService>(() => AvatarUploadService());
     
-    // 注入个人资料控制器
-    Get.lazyPut<ProfileController>(
-      () => ProfileController(),
+    // 注入用户编辑控制器
+    Get.lazyPut<UserEditController>(
+      () => UserEditController(),
     );
   }
 }

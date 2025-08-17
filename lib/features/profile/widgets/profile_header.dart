@@ -119,9 +119,9 @@ class ProfileHeader extends StatelessWidget {
                             ],
                           ),
                           
-                          // 右侧：设置图标
+                          // 右侧：编辑图标
                           GestureDetector(
-                            onTap: () => controller.handleNavigation('settings'),
+                            onTap: () => controller.handleNavigation('edit_profile'),
                             child: Container(
                               width: 32,
                               height: 32,
@@ -130,7 +130,7 @@ class ProfileHeader extends StatelessWidget {
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(
-                                Icons.settings,
+                                Icons.edit,
                                 color: Colors.white,
                                 size: 20,
                               ),

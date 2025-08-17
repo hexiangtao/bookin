@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:palette_generator/palette_generator.dart';
@@ -235,6 +236,12 @@ class ProfileController extends GetxController {
       case 'invite_friends':
         Get.toNamed('/invite');
         break;
+      case 'edit_profile':
+        Get.toNamed('/user/edit');
+        break;
+      case 'settings':
+        Get.toNamed('/settings');
+        break;
       default:
         if (AppConfig.enableApiLog) {
           print('⚠️ Unknown navigation type: $type');
@@ -352,46 +359,63 @@ class ProfileController extends GetxController {
       return;
     }
     
-    try {
-      final imageProvider = CachedNetworkImageProvider(user!.avatar!);
-      final paletteGenerator = await PaletteGenerator.fromImageProvider(
-        imageProvider,
-        maximumColorCount: 16,
-      );
+    // 异步执行，避免阻塞UI
+    Future.microtask(() async {
+      try {
+        final imageProvider = CachedNetworkImageProvider(user!.avatar!);
+        PaletteGenerator? paletteGenerator;
+        try {
+          paletteGenerator = await PaletteGenerator.fromImageProvider(
+            imageProvider,
+            maximumColorCount: 16,
+          ).timeout(
+            const Duration(seconds: 5), // 减少超时时间
+          );
+        } on TimeoutException {
+          if (AppConfig.enableApiLog) {
+            print('⏰ Avatar color extraction timeout, using default');
+          }
+          paletteGenerator = null;
+        }
       
-      // 优先选择柔和的颜色，调整亮度和饱和度
-      Color? dominantColor = paletteGenerator.mutedColor?.color ?? 
-                            paletteGenerator.lightMutedColor?.color ??
-                            paletteGenerator.vibrantColor?.color ?? 
-                            paletteGenerator.dominantColor?.color;
-      
-      // 如果提取到颜色，进行更精细的调整
-      if (dominantColor != null) {
-        final hsl = HSLColor.fromColor(dominantColor);
-        // 确保颜色既不太暗也不太亮，饱和度适中
-        final adjustedLightness = hsl.lightness < 0.3 
-            ? 0.5  // 太暗的颜色调亮
-            : hsl.lightness > 0.8 
-                ? 0.7  // 太亮的颜色调暗
-                : (hsl.lightness * 1.1).clamp(0.4, 0.8);  // 适中的颜色稍微调整
-        
-        final adjustedSaturation = (hsl.saturation * 0.7).clamp(0.3, 0.8);
-        
-        dominantColor = hsl.withSaturation(adjustedSaturation)
-                          .withLightness(adjustedLightness)
-                          .toColor();
+        if (paletteGenerator != null) {
+          // 优先选择柔和的颜色，调整亮度和饱和度
+          Color? dominantColor = paletteGenerator.mutedColor?.color ?? 
+                                paletteGenerator.lightMutedColor?.color ??
+                                paletteGenerator.vibrantColor?.color ?? 
+                                paletteGenerator.dominantColor?.color;
+          
+          // 如果提取到颜色，进行更精细的调整
+          if (dominantColor != null) {
+            final hsl = HSLColor.fromColor(dominantColor);
+            // 确保颜色既不太暗也不太亮，饱和度适中
+            final adjustedLightness = hsl.lightness < 0.3 
+                ? 0.5  // 太暗的颜色调亮
+                : hsl.lightness > 0.8 
+                    ? 0.7  // 太亮的颜色调暗
+                    : (hsl.lightness * 1.1).clamp(0.4, 0.8);  // 适中的颜色稍微调整
+            
+            final adjustedSaturation = (hsl.saturation * 0.7).clamp(0.3, 0.8);
+            
+            dominantColor = hsl.withSaturation(adjustedSaturation)
+                              .withLightness(adjustedLightness)
+                              .toColor();
+          }
+          
+          avatarDominantColor.value = dominantColor;
+          
+          if (AppConfig.enableApiLog) {
+            print('🎨 Avatar dominant color extracted: $dominantColor');
+          }
+        } else {
+          avatarDominantColor.value = null;
+        }
+      } catch (e) {
+        if (AppConfig.enableApiLog) {
+          print('❌ Extract avatar color error: $e');
+        }
+        avatarDominantColor.value = null;
       }
-      
-      avatarDominantColor.value = dominantColor;
-      
-      if (AppConfig.enableApiLog) {
-        print('🎨 Avatar dominant color extracted: $dominantColor');
-      }
-    } catch (e) {
-      if (AppConfig.enableApiLog) {
-        print('❌ Extract avatar color error: $e');
-      }
-      avatarDominantColor.value = null;
-    }
+    });
   }
 }

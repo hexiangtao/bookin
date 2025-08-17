@@ -8,6 +8,8 @@ import '../../modules/teacher/teacher_page.dart';
 import '../../modules/teacher/teacher_binding.dart';
 import '../../features/profile/pages/profile_page.dart';
 import '../../features/profile/bindings/profile_binding.dart';
+import '../../features/profile/pages/user_edit_page.dart';
+import '../../features/profile/bindings/user_edit_binding.dart';
 import '../../modules/user/login_page.dart';
 import '../../modules/user/login_binding.dart';
 import '../../modules/user/password_login_page.dart';
@@ -50,6 +52,11 @@ class AppPages {
       name: AppRoutes.user,
       page: () => const ProfilePage(),
       binding: ProfileBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.userEdit,
+      page: () => const UserEditPage(),
+      binding: UserEditBinding(),
     ),
     GetPage(
       name: AppRoutes.login,

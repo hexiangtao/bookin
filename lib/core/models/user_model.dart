@@ -40,6 +40,10 @@ class UserModel {
   @JsonKey(name: 'email')
   final String? email;
   
+  /// 个人简介
+  @JsonKey(name: 'bio')
+  final String? bio;
+  
   /// 实名认证状态
   @JsonKey(name: 'isVerified')
   final bool isVerified;
@@ -108,6 +112,7 @@ class UserModel {
     this.gender = 0,
     this.birthday,
     this.email,
+    this.bio,
     this.isVerified = false,
     this.level = 1,
     this.points = 0,
@@ -187,6 +192,7 @@ class UserModel {
     int? gender,
     String? birthday,
     String? email,
+    String? bio,
     bool? isVerified,
     int? level,
     int? points,
@@ -208,6 +214,7 @@ class UserModel {
       gender: gender ?? this.gender,
       birthday: birthday ?? this.birthday,
       email: email ?? this.email,
+      bio: bio ?? this.bio,
       isVerified: isVerified ?? this.isVerified,
       level: level ?? this.level,
       points: points ?? this.points,
