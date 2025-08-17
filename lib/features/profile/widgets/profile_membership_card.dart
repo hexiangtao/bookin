@@ -40,8 +40,8 @@ class ProfileMembershipCard extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  AppColors.primary,
-                  AppColors.primary.withOpacity(0.8),
+                  AppColors.secondary,
+                  AppColors.secondary.withOpacity(0.8),
                 ],
               ),
               borderRadius: BorderRadius.circular(12),
@@ -101,8 +101,8 @@ class ProfileMembershipCard extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppColors.primary,
-                    AppColors.primary.withOpacity(0.8),
+                    AppColors.secondary,
+                    AppColors.secondary.withOpacity(0.8),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(20),
@@ -128,13 +128,13 @@ class ProfileMembershipCard extends StatelessWidget {
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.1),
+        color: AppColors.secondary.withOpacity(0.1),
         borderRadius: BorderRadius.circular(4),
       ),
       child: Text(
         text,
         style: AppTextStyles.bodySmall.copyWith(
-          color: AppColors.primary,
+          color: AppColors.secondary,
           fontSize: 10,
         ),
       ),
