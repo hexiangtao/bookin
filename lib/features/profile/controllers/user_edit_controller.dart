@@ -8,6 +8,7 @@ import '../../../core/services/storage_service.dart';
 import '../../../core/services/user_service.dart';
 import '../../../core/config/app_config.dart';
 import '../../../core/utils/toast_util.dart';
+import '../../../core/theme/app_colors.dart';
 import '../services/avatar_upload_service.dart';
 import 'profile_controller.dart';
 
@@ -147,6 +148,11 @@ class UserEditController extends GetxController {
     emailController.addListener(() {
       _checkForChanges();
     });
+  }
+  
+  /// 检查是否有变更（公共方法）
+  void checkForChanges() {
+    _checkForChanges();
   }
   
   /// 检查是否有变更
@@ -329,6 +335,25 @@ class UserEditController extends GetxController {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       locale: const Locale('zh', 'CN'),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.secondary,
+              onPrimary: AppColors.surface,
+              surface: AppColors.surface,
+              onSurface: AppColors.textPrimary,
+            ),
+            dialogBackgroundColor: AppColors.surface,
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.secondary,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
     
     if (picked != null) {
