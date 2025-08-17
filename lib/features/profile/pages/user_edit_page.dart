@@ -72,14 +72,8 @@ class UserEditPage extends StatelessWidget {
         return SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(height: 8),
-              
-              // 头像区域
-              _buildAvatarSection(controller),
-              const SizedBox(height: 16),
-              
-              // 基本信息区域
-              _buildBasicInfoSection(controller),
+              // 头像与基本信息区域 - 真正的嵌入式布局
+              _buildAvatarWithInfoSection(controller),
               const SizedBox(height: 16),
               
               // 隐私设置区域
@@ -96,124 +90,296 @@ class UserEditPage extends StatelessWidget {
     );
   }
   
-  /// 构建头像区域
-  Widget _buildAvatarSection(UserEditController controller) {
+  /// 构建头像与基本信息区域 - 真正的嵌入式布局
+  Widget _buildAvatarWithInfoSection(UserEditController controller) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
-      padding: EdgeInsets.all(AppConfig.defaultPadding * 1.5),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
+      child: Stack(
+        clipBehavior: Clip.none,
         children: [
-          GestureDetector(
-            onTap: controller.selectAvatar,
-            child: Stack(
-              children: [
-                Obx(() {
-                  Widget avatarWidget;
-                  
-                  if (controller.selectedAvatar.value != null) {
-                    // 显示选中的本地图片
-                    avatarWidget = CircleAvatar(
-                      radius: 60,
-                      backgroundImage: FileImage(controller.selectedAvatar.value!),
-                    );
-                  } else if (controller.avatarUrl.value.isNotEmpty) {
-                    // 显示网络头像
-                    avatarWidget = CircleAvatar(
-                      radius: 60,
-                      backgroundImage: CachedNetworkImageProvider(
-                        controller.avatarUrl.value,
-                      ),
-                    );
-                  } else {
-                    // 显示默认头像
-                    avatarWidget = CircleAvatar(
-                      radius: 60,
-                      backgroundColor: AppColors.secondary.withOpacity(0.08),
-                      child: Icon(
-                        Icons.person_outline,
-                        size: 60,
-                        color: AppColors.secondary.withOpacity(0.6),
-                      ),
-                    );
-                  }
-                  
-                  return Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.secondary.withOpacity(0.1),
-                        width: 3,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.secondary.withOpacity(0.1),
-                          blurRadius: 20,
-                          offset: const Offset(0, 8),
-                        ),
-                      ],
-                    ),
-                    child: avatarWidget,
-                  );
-                }),
-                Positioned(
-                  right: 4,
-                  bottom: 4,
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: [AppColors.secondary, AppColors.secondary.withOpacity(0.8)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: AppColors.surface,
-                        width: 3,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.secondary.withOpacity(0.3),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.camera_alt_rounded,
-                      color: AppColors.surface,
-                      size: 18,
-                    ),
-                  ),
+          // 基本信息卡片
+          Container(
+            margin: const EdgeInsets.only(top: 40), // 为头像留出空间
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.shadow,
+                  blurRadius: 20,
+                  offset: const Offset(0, 4),
                 ),
               ],
             ),
-          ),
-          const SizedBox(height: 16),
-          Text(
-            '点击更换头像',
-            style: AppTextStyles.bodyMedium.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w500,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 顶部留空给头像
+                const SizedBox(height: 40),
+                
+                // 标题栏
+                Padding(
+                  padding: EdgeInsets.fromLTRB(AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: AppColors.secondary,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        '基本信息',
+                        style: AppTextStyles.h3.copyWith(
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // 昵称
+                Obx(() => _buildFormItem(
+                  label: '昵称',
+                  child: Text(
+                    controller.nickname.value.isEmpty 
+                        ? '请输入昵称' 
+                        : controller.nickname.value,
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: controller.nickname.value.isEmpty 
+                          ? AppColors.textTertiary 
+                          : AppColors.textPrimary,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textTertiary,
+                  ),
+                  onTap: () => _showEditNicknameDialog(controller),
+                )),
+                
+                _buildDivider(),
+                
+                // 手机号
+                Obx(() => _buildFormItem(
+                  label: '手机号',
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          controller.userInfo.value?.phone?.isEmpty != false 
+                              ? '请输入手机号' 
+                              : controller.userInfo.value!.phone!,
+                          style: AppTextStyles.bodyLarge.copyWith(
+                            color: controller.userInfo.value?.phone?.isEmpty != false 
+                                ? AppColors.textTertiary 
+                                : AppColors.textPrimary,
+                          ),
+                        ),
+                      ),
+                      if (controller.userInfo.value?.phone?.isNotEmpty == true)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.success.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            '已验证',
+                            style: AppTextStyles.label.copyWith(
+                              color: AppColors.success,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                )),
+                
+                _buildDivider(),
+                
+                // 邮箱
+                _buildFormItem(
+                  label: '邮箱',
+                  child: TextField(
+                    controller: controller.emailController,
+                    decoration: const InputDecoration(
+                      hintText: '请输入邮箱地址',
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                ),
+                
+                _buildDivider(),
+                
+                // 性别
+                Obx(() => _buildFormItem(
+                  label: '性别',
+                  child: Text(
+                    controller.getGenderText(controller.selectedGender.value),
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textTertiary,
+                  ),
+                  onTap: () => _showGenderPicker(controller),
+                )),
+                
+                _buildDivider(),
+                
+                // 生日
+                Obx(() => _buildFormItem(
+                  label: '生日',
+                  child: Text(
+                    controller.getBirthdayText(),
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textTertiary,
+                  ),
+                  onTap: () => controller.selectBirthday(),
+                )),
+                
+                _buildDivider(),
+                
+                // 个人简介
+                Obx(() => _buildFormItem(
+                  label: '个人简介',
+                  child: Text(
+                    controller.bio.value.isEmpty 
+                        ? '请输入个人简介' 
+                        : controller.bio.value,
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      color: controller.bio.value.isEmpty 
+                          ? AppColors.textTertiary 
+                          : AppColors.textPrimary,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textTertiary,
+                  ),
+                  onTap: () => _showEditBioDialog(controller),
+                )),
+                
+                const SizedBox(height: AppConfig.defaultPadding),
+              ],
             ),
           ),
-          const SizedBox(height: 4),
-          Text(
-            '支持JPG、PNG格式，文件大小不超过5MB',
-            style: AppTextStyles.bodySmall.copyWith(
-              color: AppColors.textTertiary,
+          
+          // 头像 - 定位在卡片顶部中央
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: GestureDetector(
+                onTap: controller.selectAvatar,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // 头像主体
+                    Obx(() {
+                      Widget avatarWidget;
+                      
+                      if (controller.selectedAvatar.value != null) {
+                        // 显示选中的本地图片
+                        avatarWidget = CircleAvatar(
+                          radius: 40,
+                          backgroundImage: FileImage(controller.selectedAvatar.value!),
+                        );
+                      } else if (controller.avatarUrl.value.isNotEmpty) {
+                        // 显示网络头像
+                        avatarWidget = CircleAvatar(
+                          radius: 40,
+                          backgroundImage: CachedNetworkImageProvider(
+                            controller.avatarUrl.value,
+                          ),
+                        );
+                      } else {
+                        // 显示默认头像
+                        avatarWidget = CircleAvatar(
+                          radius: 40,
+                          backgroundColor: AppColors.surface,
+                          child: Icon(
+                            Icons.person_outline,
+                            size: 32,
+                            color: AppColors.secondary.withOpacity(0.6),
+                          ),
+                        );
+                      }
+                      
+                      return Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.surface,
+                            width: 4,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.secondary.withOpacity(0.15),
+                              blurRadius: 20,
+                              offset: const Offset(0, 6),
+                            ),
+                            BoxShadow(
+                              color: AppColors.secondary.withOpacity(0.08),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: avatarWidget,
+                      );
+                    }),
+                    // 编辑按钮
+                    Positioned(
+                      right: 2,
+                      bottom: 2,
+                      child: Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          color: AppColors.secondary,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: AppColors.surface,
+                            width: 2,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.secondary.withOpacity(0.3),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Icon(
+                          Icons.edit_rounded,
+                          color: AppColors.surface,
+                          size: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           ),
         ],
@@ -221,179 +387,7 @@ class UserEditPage extends StatelessWidget {
     );
   }
   
-  /// 构建基本信息区域
-  Widget _buildBasicInfoSection(UserEditController controller) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: AppConfig.defaultMargin),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius * 2.5),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadow,
-            blurRadius: 20,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding * 1.5, AppConfig.defaultPadding),
-            child: Row(
-              children: [
-                Container(
-                  width: 4,
-                  height: 20,
-                  decoration: BoxDecoration(
-                    color: AppColors.secondary,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  '基本信息',
-                  style: AppTextStyles.h3.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          
-          // 昵称
-          _buildFormItem(
-            label: '昵称',
-            child: Obx(() => Text(
-              controller.nickname.value.isEmpty 
-                  ? '请输入昵称'
-                  : controller.nickname.value,
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: controller.nickname.value.isEmpty 
-                    ? AppColors.textTertiary
-                    : AppColors.textPrimary,
-              ),
-            )),
-            trailing: Icon(
-              Icons.chevron_right,
-              color: AppColors.textTertiary,
-            ),
-            onTap: () => _showEditNicknameDialog(controller),
-          ),
-          
-          _buildDivider(),
-          
-          // 手机号（只读）
-          Obx(() => _buildFormItem(
-            label: '手机号',
-            child: Text(
-              controller.userInfo.value?.phone ?? '',
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textSecondary,
-              ),
-            ),
-            trailing: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppConfig.defaultBorderRadius / 2),
-              ),
-              child: Text(
-                '已验证',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: AppColors.success,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          )),
-          
-          _buildDivider(),
-          
-          // 邮箱
-          _buildFormItem(
-            label: '邮箱',
-            child: TextField(
-              controller: controller.emailController,
-              decoration: const InputDecoration(
-                hintText: '请输入邮箱地址',
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.zero,
-              ),
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textPrimary,
-              ),
-              keyboardType: TextInputType.emailAddress,
-            ),
-          ),
-          
-          _buildDivider(),
-          
-          // 性别
-          Obx(() => _buildFormItem(
-            label: '性别',
-            child: Text(
-              controller.getGenderText(controller.selectedGender.value),
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textPrimary,
-              ),
-            ),
-            trailing: Icon(
-              Icons.chevron_right,
-              color: AppColors.textTertiary,
-            ),
-            onTap: () => _showGenderPicker(controller),
-          )),
-          
-          _buildDivider(),
-          
-          // 生日
-          Obx(() => _buildFormItem(
-            label: '生日',
-            child: Text(
-              controller.getBirthdayText(),
-              style: AppTextStyles.bodyLarge.copyWith(
-                color: AppColors.textPrimary,
-              ),
-            ),
-            trailing: Icon(
-              Icons.chevron_right,
-              color: AppColors.textTertiary,
-            ),
-            onTap: controller.selectBirthday,
-          )),
-          
-          _buildDivider(),
-          
-          // 个人简介
-          _buildFormItem(
-            label: '个人简介',
-            child: Obx(() => Text(
-              controller.bio.value.isEmpty 
-                  ? '介绍一下自己吧...'
-                  : controller.bio.value,
-              style: TextStyle(
-                fontSize: 16,
-                color: controller.bio.value.isEmpty 
-                    ? AppColors.textTertiary
-                    : AppColors.textPrimary,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            )),
-            trailing: Icon(
-              Icons.chevron_right,
-              color: AppColors.textTertiary,
-            ),
-            onTap: () => _showEditBioDialog(controller),
-          ),
-          
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
+
   
   /// 构建隐私设置区域
   Widget _buildPrivacySection(UserEditController controller) {
@@ -786,7 +780,7 @@ class UserEditPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: TextEditingController(text: controller.nicknameController.text),
+                controller: controller.nicknameController,
                 maxLength: 20,
                 decoration: InputDecoration(
                   hintText: '请输入昵称',
@@ -804,9 +798,7 @@ class UserEditPage extends StatelessWidget {
                 style: AppTextStyles.bodyLarge.copyWith(
                   color: AppColors.textPrimary,
                 ),
-                onChanged: (value) {
-                  controller.nicknameController.text = value;
-                },
+
               ),
               const SizedBox(height: 24),
               Row(
@@ -892,7 +884,7 @@ class UserEditPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               TextField(
-                controller: TextEditingController(text: controller.bioController.text),
+                controller: controller.bioController,
                 maxLines: 4,
                 maxLength: 200,
                 decoration: InputDecoration(
@@ -911,9 +903,7 @@ class UserEditPage extends StatelessWidget {
                 style: AppTextStyles.bodyLarge.copyWith(
                   color: AppColors.textPrimary,
                 ),
-                onChanged: (value) {
-                  controller.bioController.text = value;
-                },
+
               ),
               const SizedBox(height: 24),
               Row(
