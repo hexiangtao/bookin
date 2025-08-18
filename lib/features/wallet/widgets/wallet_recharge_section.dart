@@ -139,7 +139,7 @@ class _RechargeOptionsGrid extends StatelessWidget {
 
   Widget _buildCustomAmountInput() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Colors.white, Colors.grey[50]!],
@@ -180,7 +180,7 @@ class _RechargeOptionsGrid extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(height: AppDimensions.spacingM),
+          SizedBox(height: AppDimensions.spacingS),
           Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(12),
@@ -426,7 +426,7 @@ class WalletRechargeSection extends StatelessWidget {
         label: '充值金额 ${option.valueInYuan.toStringAsFixed(0)} 元',
         hint: isSelected ? '已选中' : '点击选择此充值金额',
         child: Container(
-          padding: AppDimensions.paddingM,
+          padding: AppDimensions.paddingS,
           decoration: BoxDecoration(
             color: isSelected ? AppColors.secondary : Colors.white,
             border: Border.all(
@@ -446,7 +446,7 @@ class WalletRechargeSection extends StatelessWidget {
                 ),
               ),
               if (option.gift > 0) ...[
-                SizedBox(height: AppDimensions.spacingXs),
+                const SizedBox(height: 2),
                 Text(
                   '送¥${option.giftInYuan.toStringAsFixed(0)}',
                   style: AppTextStyles.bodySmall.copyWith(

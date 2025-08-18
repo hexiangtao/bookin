@@ -179,7 +179,7 @@ class _BalanceCardContent extends StatelessWidget {
                   ),
                 ),
                 
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 
                 // 操作按钮
                 Row(

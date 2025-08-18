@@ -99,7 +99,7 @@ class WalletQuickEntry extends GetView<WalletController> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: AppDimensions.borderRadiusL,
@@ -122,7 +122,7 @@ class WalletQuickEntry extends GetView<WalletController> {
               ),
             ),
             
-            const SizedBox(height: 6),
+            const SizedBox(height: 4),
             
             // 标题
             Text(

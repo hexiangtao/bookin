@@ -59,7 +59,7 @@ class WalletBottomAction extends GetView<WalletController> {
                       fontSize: 12,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 2),
                   // 充值金额
                   Text(
                     '¥${amount.toStringAsFixed(2)}',
@@ -74,7 +74,7 @@ class WalletBottomAction extends GetView<WalletController> {
             }),
           ),
           
-          const SizedBox(width: 20),
+          const SizedBox(width: 16),
           
           // 支付按钮
           Obx(() {

@@ -78,7 +78,7 @@ class WalletPage extends GetView<WalletController> {
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.secondary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
@@ -94,7 +94,7 @@ class WalletPage extends GetView<WalletController> {
             size: 20,
             color: AppColors.secondary,
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 6),
           Expanded(
             child: Text(
               '充值过程受银行级安全保护，请放心使用',

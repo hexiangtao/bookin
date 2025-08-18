@@ -74,12 +74,12 @@ class WalletPaymentSection extends GetView<WalletController> {
       return AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         margin: EdgeInsets.only(
-          bottom: index < controller.paymentMethods.length - 1 ? 12 : 0,
+          bottom: index < controller.paymentMethods.length - 1 ? 10 : 0,
         ),
         child: GestureDetector(
           onTap: () => controller.selectPayment(index),
           child: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               gradient: isSelected 
                 ? LinearGradient(
