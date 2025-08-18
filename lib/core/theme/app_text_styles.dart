@@ -75,6 +75,28 @@ class AppTextStyles {
     height: 1.2,
   );
   
+  // 标题样式 - Material Design 3
+  static const TextStyle titleLarge = TextStyle(
+    fontSize: 22,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+    height: 1.3,
+  );
+  
+  static const TextStyle titleMedium = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+    height: 1.3,
+  );
+  
+  static const TextStyle titleSmall = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w600,
+    color: AppColors.textPrimary,
+    height: 1.3,
+  );
+  
   // 标签样式
   static const TextStyle label = TextStyle(
     fontSize: 12,

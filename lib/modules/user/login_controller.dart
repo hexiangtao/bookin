@@ -42,7 +42,15 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // 预填充固定的测试数据
+    phoneController.text = '17710161105';
+    codeController.text = '1105';
+    
     _setupListeners();
+    
+    // 初始验证
+    validatePhone();
+    validateCode();
   }
   
   @override

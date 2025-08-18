@@ -39,6 +39,12 @@ class AppColors {
   // 阴影色
   static const Color shadow = Color(0x1A000000);
   
+  // 灰色系列
+  static const Color grey200 = Color(0xFFEEEEEE);
+  static const Color grey400 = Color(0xFFBDBDBD);
+  static const Color grey500 = Color(0xFF9E9E9E);
+  static const Color grey600 = Color(0xFF757575);
+  
   // 透明度变体
   static Color primaryWithOpacity(double opacity) => primary.withOpacity(opacity);
   static Color textPrimaryWithOpacity(double opacity) => textPrimary.withOpacity(opacity);

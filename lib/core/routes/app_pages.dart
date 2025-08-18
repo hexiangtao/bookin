@@ -18,6 +18,8 @@ import '../../modules/technician/technician_list_page.dart';
 import '../../modules/technician/technician_list_binding.dart';
 import '../../modules/technician/technician_detail_page.dart';
 import '../../modules/technician/technician_detail_binding.dart';
+import '../../features/wallet/views/wallet_page.dart';
+import '../../features/wallet/bindings/wallet_binding.dart';
 import 'app_routes.dart';
 
 
@@ -77,6 +79,11 @@ class AppPages {
       name: AppRoutes.teacherDetail,
       page: () => const TechnicianDetailPage(),
       binding: TechnicianDetailBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.userWallet,
+      page: () => const WalletPage(),
+      binding: WalletBinding(),
     ),
   ];
 }

@@ -210,7 +210,7 @@ class ProfileController extends GetxController {
         Get.toNamed('/coupons');
         break;
       case 'wallet':
-        Get.toNamed('/wallet');
+        Get.toNamed('/user/wallet');
         break;
       case 'settings':
         Get.toNamed('/settings');
