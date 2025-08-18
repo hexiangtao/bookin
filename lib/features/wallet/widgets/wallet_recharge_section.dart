@@ -39,7 +39,7 @@ class _RechargeOptionsGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 2.8,
+            childAspectRatio: 3.2,
             crossAxisSpacing: AppDimensions.spacingM,
             mainAxisSpacing: AppDimensions.spacingM,
           ),

@@ -11,13 +11,13 @@ class WalletQuickEntry extends GetView<WalletController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: AppDimensions.marginL,
+      margin: const EdgeInsets.symmetric(horizontal: 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // 标题
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 12),
+            padding: const EdgeInsets.only(left: 4, bottom: 10),
             child: Row(
               children: [
                 Container(
@@ -50,7 +50,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                   onTap: controller.toRechargeRecords,
                 ),
               ),
-              SizedBox(width: AppDimensions.spacingM),
+              const SizedBox(width: 10),
               Expanded(
                 child: _buildQuickEntryCard(
                   icon: Icons.receipt_long,
@@ -62,7 +62,7 @@ class WalletQuickEntry extends GetView<WalletController> {
             ],
           ),
           
-          SizedBox(height: AppDimensions.spacingM),
+          const SizedBox(height: 10),
           
           Row(
             children: [
@@ -74,7 +74,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                   onTap: controller.toRefundRecords,
                 ),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 10),
               Expanded(
                 child: _buildQuickEntryCard(
                   icon: Icons.local_offer,
@@ -99,7 +99,7 @@ class WalletQuickEntry extends GetView<WalletController> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: AppDimensions.borderRadiusL,
@@ -109,20 +109,20 @@ class WalletQuickEntry extends GetView<WalletController> {
           children: [
             // 图标背景
             Container(
-              width: 40,
-              height: 40,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(9),
               ),
               child: Icon(
                 icon,
                 color: color,
-                size: 20,
+                size: 18,
               ),
             ),
             
-            const SizedBox(height: 8),
+            const SizedBox(height: 6),
             
             // 标题
             Text(

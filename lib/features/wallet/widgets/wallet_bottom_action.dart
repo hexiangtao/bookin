@@ -14,7 +14,7 @@ class WalletBottomAction extends GetView<WalletController> {
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
-        top: 24,
+        top: 32,
         bottom: 20 + MediaQuery.of(context).padding.bottom,
       ),
       decoration: BoxDecoration(
