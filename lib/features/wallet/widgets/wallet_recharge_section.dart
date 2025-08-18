@@ -39,7 +39,7 @@ class _RechargeOptionsGrid extends StatelessWidget {
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 2.5,
+            childAspectRatio: 2.8,
             crossAxisSpacing: AppDimensions.spacingM,
             mainAxisSpacing: AppDimensions.spacingM,
           ),
@@ -69,15 +69,36 @@ class _RechargeOptionsGrid extends StatelessWidget {
   Widget _buildRechargeOptionItem(RechargeOptionModel option, bool isSelected) {
     return AnimatedWidgets.bounceButton(
       onPressed: () => onOptionSelected(option.valueInYuan),
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         padding: AppDimensions.paddingM,
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Colors.white,
+          gradient: isSelected 
+            ? LinearGradient(
+                colors: [AppColors.secondary, AppColors.secondary.withOpacity(0.8)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : LinearGradient(
+                colors: [Colors.white, Colors.grey[50]!],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.border,
-            width: 2,
+            color: isSelected ? AppColors.secondary : Colors.grey[300]!,
+            width: isSelected ? 2 : 1,
           ),
-          borderRadius: AppDimensions.borderRadiusM,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: isSelected 
+                ? AppColors.secondary.withOpacity(0.3)
+                : Colors.grey.withOpacity(0.1),
+              blurRadius: isSelected ? 12 : 6,
+              offset: const Offset(0, 4),
+              spreadRadius: isSelected ? 2 : 0,
+            ),
+          ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -86,15 +107,27 @@ class _RechargeOptionsGrid extends StatelessWidget {
               '¥${option.valueInYuan.toStringAsFixed(0)}',
               style: AppTextStyles.h3.copyWith(
                 color: isSelected ? Colors.white : AppColors.textPrimary,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w700,
+                fontSize: 20,
               ),
             ),
             if (option.gift > 0) ...[
               SizedBox(height: AppDimensions.spacingXs),
-              Text(
-                '送¥${option.giftInYuan.toStringAsFixed(0)}',
-                style: AppTextStyles.bodySmall.copyWith(
-                  color: isSelected ? Colors.white70 : AppColors.textSecondary,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(
+                  color: isSelected 
+                    ? Colors.white.withOpacity(0.2)
+                    : AppColors.secondary.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  '送¥${option.giftInYuan.toStringAsFixed(0)}',
+                  style: AppTextStyles.bodySmall.copyWith(
+                    color: isSelected ? Colors.white : AppColors.secondary,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                  ),
                 ),
               ),
             ],
@@ -106,32 +139,113 @@ class _RechargeOptionsGrid extends StatelessWidget {
 
   Widget _buildCustomAmountInput() {
     return Container(
-      padding: AppDimensions.paddingM,
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
-        borderRadius: AppDimensions.borderRadiusM,
-        border: Border.all(color: AppColors.border),
+        gradient: LinearGradient(
+          colors: [Colors.white, Colors.grey[50]!],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.grey[200]!, width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '自定义金额',
-            style: AppTextStyles.bodyMedium.copyWith(
-              fontWeight: FontWeight.w600,
+          Row(
+            children: [
+              Container(
+                width: 4,
+                height: 16,
+                decoration: BoxDecoration(
+                  color: AppColors.secondary,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                '自定义金额',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: AppDimensions.spacingM),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.grey[300]!,
+                width: 1.5,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.05),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
+                ),
+              ],
+            ),
+            child: TextField(
+              keyboardType: TextInputType.number,
+              onChanged: onCustomAmountChanged,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
+              decoration: InputDecoration(
+                hintText: '请输入充值金额',
+                hintStyle: TextStyle(
+                  color: Colors.grey[500],
+                  fontSize: 15,
+                  fontWeight: FontWeight.w400,
+                ),
+                prefixIcon: Container(
+                  width: 50,
+                  alignment: Alignment.center,
+                  child: Text(
+                    '¥',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.secondary,
+                    ),
+                  ),
+                ),
+                suffixIcon: Icon(
+                  Icons.edit_outlined,
+                  color: Colors.grey[400],
+                  size: 20,
+                ),
+                border: InputBorder.none,
+                enabledBorder: InputBorder.none,
+                focusedBorder: InputBorder.none,
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 18,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+              ),
             ),
           ),
-          SizedBox(height: AppDimensions.spacingS),
-          TextField(
-            keyboardType: TextInputType.number,
-            onChanged: onCustomAmountChanged,
-            decoration: InputDecoration(
-              hintText: '请输入充值金额',
-              prefixText: '¥',
-              border: OutlineInputBorder(
-                borderRadius: AppDimensions.borderRadiusS,
-              ),
-              contentPadding: AppDimensions.paddingM,
+          const SizedBox(height: 8),
+          Text(
+            '最低充值1元，最高充值50000元',
+            style: AppTextStyles.bodySmall.copyWith(
+              color: Colors.grey[600],
+              fontSize: 12,
             ),
           ),
         ],
@@ -314,9 +428,9 @@ class WalletRechargeSection extends StatelessWidget {
         child: Container(
           padding: AppDimensions.paddingM,
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.primary : Colors.white,
+            color: isSelected ? AppColors.secondary : Colors.white,
             border: Border.all(
-              color: isSelected ? AppColors.primary : AppColors.border,
+              color: isSelected ? AppColors.secondary : Colors.grey[300]!,
               width: 2,
             ),
             borderRadius: AppDimensions.borderRadiusM,
@@ -469,7 +583,7 @@ class WalletRechargeSection extends StatelessWidget {
             child: Text(
               '重新加载',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.primary,
+                color: AppColors.secondary,
               ),
             ),
           ),

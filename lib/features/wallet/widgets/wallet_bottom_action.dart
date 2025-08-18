@@ -14,7 +14,7 @@ class WalletBottomAction extends GetView<WalletController> {
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
-        top: 20,
+        top: 24,
         bottom: 20 + MediaQuery.of(context).padding.bottom,
       ),
       decoration: BoxDecoration(
@@ -64,7 +64,7 @@ class WalletBottomAction extends GetView<WalletController> {
                   Text(
                     '¥${amount.toStringAsFixed(2)}',
                     style: TextStyle(
-                      color: AppColors.primary,
+                      color: AppColors.secondary,
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
                     ),
@@ -82,50 +82,77 @@ class WalletBottomAction extends GetView<WalletController> {
             final isProcessing = controller.isProcessingPayment;
             
             return AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              child: ElevatedButton(
-                onPressed: canPay && !isProcessing ? controller.doRecharge : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: canPay ? AppColors.primary : Colors.grey[300],
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 18,
-                  ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  elevation: canPay ? 6 : 0,
-                  shadowColor: canPay ? AppColors.primary.withOpacity(0.3) : null,
+              duration: const Duration(milliseconds: 300),
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: canPay 
+                    ? LinearGradient(
+                        colors: [AppColors.secondary, AppColors.secondaryDark],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
+                    : LinearGradient(
+                        colors: [Colors.grey[300]!, Colors.grey[400]!],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: canPay ? [
+                    BoxShadow(
+                      color: AppColors.secondary.withOpacity(0.4),
+                      blurRadius: 12,
+                      offset: const Offset(0, 6),
+                      spreadRadius: 2,
+                    ),
+                  ] : [],
                 ),
-                child: Container(
-                  constraints: const BoxConstraints(minWidth: 140),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (isProcessing) ...[
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: canPay && !isProcessing ? controller.doRecharge : null,
+                    borderRadius: BorderRadius.circular(30),
+                    child: Container(
+                      constraints: const BoxConstraints(minWidth: 140),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 40,
+                        vertical: 18,
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          if (isProcessing) ...[
+                            SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2.5,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                          ] else if (canPay) ...[
+                            Icon(
+                              Icons.payment_rounded,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                            const SizedBox(width: 8),
+                          ],
+                          Text(
+                            isProcessing ? '处理中...' : _getPayButtonText(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              letterSpacing: 0.5,
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                      ],
-                      Text(
-                      isProcessing ? '处理中...' : _getPayButtonText(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
+                        ],
                       ),
                     ),
-                    ],
                   ),
                 ),
               ),

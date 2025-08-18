@@ -243,8 +243,8 @@ class _BalanceCardContent extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF2B3A67),
-            const Color(0xFF1E2749),
+            AppColors.primary,
+            AppColors.primaryDark,
           ],
           stops: const [0.0, 1.0],
         );
@@ -253,8 +253,8 @@ class _BalanceCardContent extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF2B3A67),
-            const Color(0xFF1E2749),
+            AppColors.primary,
+            AppColors.primaryDark,
           ],
           stops: const [0.0, 1.0],
         );
@@ -263,8 +263,8 @@ class _BalanceCardContent extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF2B3A67),
-            const Color(0xFF1E2749),
+            AppColors.primary,
+            AppColors.primaryDark,
           ],
           stops: const [0.0, 1.0],
         );
@@ -273,8 +273,8 @@ class _BalanceCardContent extends StatelessWidget {
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
           colors: [
-            const Color(0xFF2B3A67),
-            const Color(0xFF1E2749),
+            Color(0xFF2C2C2E),
+            Color(0xFF1C1C1E),
           ],
         );
     }

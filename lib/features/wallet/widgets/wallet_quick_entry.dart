@@ -24,7 +24,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                   width: 4,
                   height: 16,
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: AppColors.secondary,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -46,7 +46,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                 child: _buildQuickEntryCard(
                   icon: Icons.add_circle,
                   title: '充值记录',
-                  color: const Color(0xFF4285F4),
+                  color: AppColors.secondary,
                   onTap: controller.toRechargeRecords,
                 ),
               ),
@@ -55,7 +55,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                 child: _buildQuickEntryCard(
                   icon: Icons.receipt_long,
                   title: '消费明细',
-                  color: const Color(0xFF34A853),
+                  color: AppColors.secondaryLight,
                   onTap: controller.toConsumeRecords,
                 ),
               ),
@@ -70,7 +70,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                 child: _buildQuickEntryCard(
                   icon: Icons.refresh,
                   title: '退款记录',
-                  color: const Color(0xFFFF9800),
+                  color: AppColors.secondary.withOpacity(0.8),
                   onTap: controller.toRefundRecords,
                 ),
               ),
@@ -79,7 +79,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                 child: _buildQuickEntryCard(
                   icon: Icons.local_offer,
                   title: '我的优惠券',
-                  color: const Color(0xFFE91E63),
+                  color: AppColors.secondaryDark,
                   onTap: controller.toCoupons,
                 ),
               ),
@@ -90,7 +90,6 @@ class WalletQuickEntry extends GetView<WalletController> {
     );
   }
 
-  /// 构建快捷入口卡片
   Widget _buildQuickEntryCard({
     required IconData icon,
     required String title,
@@ -100,7 +99,7 @@ class WalletQuickEntry extends GetView<WalletController> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: AppDimensions.paddingL,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: AppDimensions.borderRadiusL,
@@ -110,20 +109,20 @@ class WalletQuickEntry extends GetView<WalletController> {
           children: [
             // 图标背景
             Container(
-              width: 48,
-              height: 48,
+              width: 40,
+              height: 40,
               decoration: BoxDecoration(
                 color: color.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(10),
               ),
               child: Icon(
                 icon,
                 color: color,
-                size: 24,
+                size: 20,
               ),
             ),
             
-            SizedBox(height: AppDimensions.spacingM),
+            const SizedBox(height: 8),
             
             // 标题
             Text(
@@ -131,6 +130,7 @@ class WalletQuickEntry extends GetView<WalletController> {
               style: AppTextStyles.bodySmall.copyWith(
                 fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
+                fontSize: 12,
               ),
               textAlign: TextAlign.center,
               maxLines: 1,

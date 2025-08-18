@@ -33,7 +33,7 @@ class WalletPaymentSection extends GetView<WalletController> {
                 width: 4,
                 height: 16,
                 decoration: BoxDecoration(
-                  color: AppColors.primary,
+                  color: AppColors.secondary,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -71,97 +71,152 @@ class WalletPaymentSection extends GetView<WalletController> {
     return Obx(() {
       final isSelected = controller.selectedPaymentIndex == index;
       
-      return GestureDetector(
-        onTap: () => controller.selectPayment(index),
-        child: Container(
-          margin: EdgeInsets.only(
-            bottom: index < controller.paymentMethods.length - 1 ? 12 : 0,
-          ),
-          padding: const EdgeInsets.all(16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: isSelected ? _getPaymentColor(method.type) : Colors.grey[200]!,
-              width: isSelected ? 2 : 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: isSelected 
-                    ? _getPaymentColor(method.type).withOpacity(0.15)
-                    : Colors.black.withOpacity(0.03),
-                blurRadius: isSelected ? 8 : 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Row(
-            children: [
-              // 支付方式图标
-              Container(
-                width: 40,
-                height: 40,
-                decoration: BoxDecoration(
-                  color: _getPaymentColor(method.type).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Icon(
-                  _getPaymentIcon(method.type),
-                  color: _getPaymentColor(method.type),
-                  size: 20,
-                ),
-              ),
-              
-              const SizedBox(width: 16),
-              
-              // 支付方式信息
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      method.name,
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                    if (method.description != null && method.description!.isNotEmpty) ...[
-                      const SizedBox(height: 4),
-                      Text(
-                        method.description!,
-                        style: AppTextStyles.bodySmall.copyWith(
-                          color: Colors.grey[600],
-                        ),
-                      ),
+      return AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        margin: EdgeInsets.only(
+          bottom: index < controller.paymentMethods.length - 1 ? 12 : 0,
+        ),
+        child: GestureDetector(
+          onTap: () => controller.selectPayment(index),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              gradient: isSelected 
+                ? LinearGradient(
+                    colors: [
+                      _getPaymentColor(method.type).withOpacity(0.1),
+                      _getPaymentColor(method.type).withOpacity(0.05),
                     ],
-                  ],
-                ),
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : LinearGradient(
+                    colors: [Colors.white, Colors.grey[50]!],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isSelected ? _getPaymentColor(method.type) : Colors.grey[200]!,
+                width: isSelected ? 2 : 1,
               ),
-              
-              // 选中状态指示器
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                width: 20,
-                height: 20,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isSelected ? _getPaymentColor(method.type) : Colors.transparent,
-                  border: Border.all(
-                    color: isSelected ? _getPaymentColor(method.type) : Colors.grey[400]!,
-                    width: 2,
+              boxShadow: [
+                BoxShadow(
+                  color: isSelected 
+                      ? _getPaymentColor(method.type).withOpacity(0.2)
+                      : Colors.black.withOpacity(0.03),
+                  blurRadius: isSelected ? 12 : 6,
+                  offset: const Offset(0, 4),
+                  spreadRadius: isSelected ? 1 : 0,
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                // 支付方式图标
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: isSelected 
+                        ? [
+                            _getPaymentColor(method.type),
+                            _getPaymentColor(method.type).withOpacity(0.8),
+                          ]
+                        : [
+                            _getPaymentColor(method.type).withOpacity(0.1),
+                            _getPaymentColor(method.type).withOpacity(0.05),
+                          ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: isSelected ? [
+                      BoxShadow(
+                        color: _getPaymentColor(method.type).withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ] : null,
+                  ),
+                  child: Icon(
+                    _getPaymentIcon(method.type),
+                    color: isSelected ? Colors.white : _getPaymentColor(method.type),
+                    size: 24,
                   ),
                 ),
-                child: isSelected
-                    ? const Icon(
-                        Icons.check,
-                        color: Colors.white,
-                        size: 12,
-                      )
-                    : null,
-              ),
-            ],
+                
+                const SizedBox(width: 16),
+                
+                // 支付方式信息
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        method.name,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w700,
+                          color: isSelected 
+                            ? _getPaymentColor(method.type)
+                            : AppColors.textPrimary,
+                        ),
+                      ),
+                      if (method.description != null && method.description!.isNotEmpty) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          method.description!,
+                          style: AppTextStyles.bodySmall.copyWith(
+                            color: Colors.grey[600],
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+                
+                // 选中状态指示器
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  width: 24,
+                  height: 24,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    gradient: isSelected 
+                      ? LinearGradient(
+                          colors: [
+                            _getPaymentColor(method.type),
+                            _getPaymentColor(method.type).withOpacity(0.8),
+                          ],
+                        )
+                      : null,
+                    color: isSelected ? null : Colors.transparent,
+                    border: Border.all(
+                      color: isSelected ? _getPaymentColor(method.type) : Colors.grey[400]!,
+                      width: 2,
+                    ),
+                    boxShadow: isSelected ? [
+                      BoxShadow(
+                        color: _getPaymentColor(method.type).withOpacity(0.3),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ] : null,
+                  ),
+                  child: isSelected
+                      ? const Icon(
+                          Icons.check,
+                          color: Colors.white,
+                          size: 14,
+                        )
+                      : null,
+                ),
+              ],
+            ),
           ),
         ),
       );

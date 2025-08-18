@@ -26,7 +26,7 @@ class WalletPage extends GetView<WalletController> {
       ),
       body: RefreshIndicator(
         onRefresh: controller.refreshData,
-        color: AppColors.primary,
+        color: AppColors.secondary,
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: Column(
@@ -80,10 +80,10 @@ class WalletPage extends GetView<WalletController> {
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.05),
+        color: AppColors.secondary.withOpacity(0.05),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: AppColors.primary.withOpacity(0.1),
+          color: AppColors.secondary.withOpacity(0.1),
           width: 1,
         ),
       ),
@@ -92,7 +92,7 @@ class WalletPage extends GetView<WalletController> {
           Icon(
             Icons.security,
             size: 20,
-            color: AppColors.primary,
+            color: AppColors.secondary,
           ),
           const SizedBox(width: 8),
           Expanded(
