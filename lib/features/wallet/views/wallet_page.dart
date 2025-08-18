@@ -34,12 +34,12 @@ class WalletPage extends GetView<WalletController> {
               // 余额卡片
               const WalletBalanceCard(),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               
               // 快捷入口
               const WalletQuickEntry(),
               
-              const SizedBox(height: 16),
+              const SizedBox(height: 12),
               
               // 充值区域
               Obx(() => AnimatedContainer(
@@ -50,9 +50,9 @@ class WalletPage extends GetView<WalletController> {
                     ? Column(
                         children: [
                           const WalletRechargeSection(),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 12),
                           const WalletPaymentSection(),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 12),
                           _buildSecurityTips(),
                           const SizedBox(height: 100), // 为底部操作栏留出空间
                         ],

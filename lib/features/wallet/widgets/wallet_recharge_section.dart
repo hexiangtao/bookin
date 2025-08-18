@@ -55,7 +55,7 @@ class _RechargeOptionsGrid extends StatelessWidget {
           },
         ),
         
-        SizedBox(height: AppDimensions.spacingL),
+        SizedBox(height: AppDimensions.spacingM),
         
         // 自定义金额输入
         AnimatedWidgets.slideIn(
@@ -319,7 +319,7 @@ class WalletRechargeSection extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            SizedBox(height: AppDimensions.spacingL),
+            SizedBox(height: AppDimensions.spacingM),
             GetBuilder<WalletController>(
               id: 'recharge_section',
               builder: (controller) {

@@ -17,7 +17,7 @@ class WalletQuickEntry extends GetView<WalletController> {
         children: [
           // 标题
           Padding(
-            padding: const EdgeInsets.only(left: 4, bottom: 10),
+            padding: const EdgeInsets.only(left: 4, bottom: 8),
             child: Row(
               children: [
                 Container(
@@ -50,7 +50,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                   onTap: controller.toRechargeRecords,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: _buildQuickEntryCard(
                   icon: Icons.receipt_long,
@@ -62,7 +62,7 @@ class WalletQuickEntry extends GetView<WalletController> {
             ],
           ),
           
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           
           Row(
             children: [
@@ -74,7 +74,7 @@ class WalletQuickEntry extends GetView<WalletController> {
                   onTap: controller.toRefundRecords,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Expanded(
                 child: _buildQuickEntryCard(
                   icon: Icons.local_offer,
